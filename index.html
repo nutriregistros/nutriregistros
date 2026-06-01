@@ -748,27 +748,84 @@ function saveConfig() {
   showStatus('Client ID guardado. Ahora podés usar "Guardar en Drive".','ok');
 }
 
-function loadGapi() {
-  return new Promise((res,rej) => {
-    if(window.google?.accounts) return res();
-    const s = document.createElement('script');
-    s.src = 'https://accounts.google.com/gsi/client';
-    s.onload = res; s.onerror = () => rej(new Error('No se pudo cargar Google API'));
-    document.head.appendChild(s);
-  });
+function loadGapi() { return Promise.resolve(); } // ya no se necesita
+
+// ── SERVICE ACCOUNT JWT ──
+const SA = {
+  email: "nutriregistros-bot@nutriregistros.iam.gserviceaccount.com",
+  privateKeyId: "05dae65d5c24d81196cb62f116a1975c583c19ec",
+  privateKey: `-----BEGIN PRIVATE KEY-----
+MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC+Tt5j1JK9oyl6
+2dKM6lrR8maFnVX/iiipq0N/tK0TKH678c3dBsAD7EzUFnOHzoXfvDP8nWcYYgFQ
+b+of0W8AbTx8CEH2M6uld9Og8CeXkjqAePTHDEGWCjAaRe8glgw8ZyV08TkrKaAp
+0b7zI+oK8/E733XRQOmuNlqBLwpjlvHaFgVSlTaTLhkPBhkRHyubDSPSQx+8sBXT
+lHy5GLkP/aHx1urUOBPeUsV9HmKqObguL3ldb/YLPoZVjAz2C230BTUjnNaLaP+g
+g/eJgBWAfGcDkg0c/O7V2GkVVrcOM08MDBMUokyAcVFf2RSW56UTzESC1Y/mo0Bn
+B1qS3bofAgMBAAECggEADM8MItX85myj7xPYGwnvAPB6vAWB80geQoU3btH/UCnK
+leXJgFXi+KCf7ypvrjVVR2DIcvk5Jif6hKpzrJ6RBQtVJdf8cJC7vdBZ2xwu3gHG
+lD0P5JHLnEilQi9wz9Wpjys2Fy/hNCmCES5/1qeVKhWPKAN7T5E56TLZVpaO8XLq
+k+0q8UlFTZNNdG/l5EwWG7ULWPFs5Jh94QOJ1OjkZ0l5L0vGn/jJNgnC2ekqMMOa
+gRJHcjCs85yBcsLfV4tkqeCtwvGPc9kY/u8gTyeANCH0HdJVVKOPsxUiFQZDJWG+
+T79CWWNtE62HSkNKb1yOp9XbJTNnlG/4DxtrGMxmuQKBgQDwgcdtUbcQWuiLByrq
+BdEbioq5WvHCuRM4PY3hVcUEVJ41Xp76pJed4n3aIJWWq9T+VqqE9buZZ64Du8iD
+DYvlfUg8RJEZ0iuIrwddoXQxKuKQzQ8qggdHTZatLQIsvtl6M2Q/PQzaIO0Buvs4
+7OomSJaynavJG5lU3R0TLZlr4wKBgQDKkUF8LW13P327i+1jYcfqlbHjAlQ3do+p
+521XSO+wxmgpCKEMHckiThJFR4Yt5+MdRxQZ7XjdsinIHPdcCPTBUve57GAoW6co
+l4XQnmisAIKMsYXk7asOvgIsmxA4nWquDJ+UqRwBxpzrqKnREEBaRBHvvLzatXmr
+hRIFr3eFlQKBgB0nHg1aQl5xJo7zp3gGjHpSKM6e/38i//lpPLF7vA3yU9sURSEM
+onQ46BhwqrFA0uihiLnlL4BA2Q8KzBtWoQaIUSE9DnmayDwhOztWPsdW82+p65Sz
+fj5eYU1Mj17tI190q0ofFFe8df4ntBwKW7eYROwRwKj393YZ91RDyr0RAoGAJ3Il
+yGKoQGJyv4S+E25FGd9Qpp4bfDlwPGu+lRK06j2YpvTxN4TNWArP8AG/lUzkoxzm
+Qy5FLRa2oCtT1+4+iy724pOvHezLHlJzUm6mf2gSBAfFxRCrENHbZohDnmK5FW+L
+280akRX2FMXhW77IaUt8Gq0sMYLJUKc3HThQFAkCgYBL7igUChx2/p7MYOm1f2wR
+0fTWowzqhea1DTbHDpYJCHYYnxw9TDUZRNTdt/l7YFXMxuJe3f4kcQRs01abcZk1
+Ig4WKQr+UCz/oyRTC2dvG2RewN8919r23sIlqYo2ZLXxkHi0NTYJcpfucsBH5Aw4
+IRJuSzHeTS/nsANw5EQb1g==
+-----END PRIVATE KEY-----`
+};
+
+function b64url(str) {
+  return btoa(str).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function b64urlUint8(u8) {
+  let s=''; u8.forEach(b=>s+=String.fromCharCode(b));
+  return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 }
 
-function getToken(clientId) {
-  return new Promise(res => {
-    const client = google.accounts.oauth2.initTokenClient({
-      client_id: clientId,
-      scope: 'https://www.googleapis.com/auth/drive.file',
-      callback: r => res(r.access_token||null),
-      error_callback: () => res(null)
-    });
-    client.requestAccessToken();
+async function getServiceAccountToken() {
+  const now = Math.floor(Date.now()/1000);
+  const header = b64url(JSON.stringify({alg:'RS256',typ:'JWT',kid:SA.privateKeyId}));
+  const claim  = b64url(JSON.stringify({
+    iss: SA.email, scope: 'https://www.googleapis.com/auth/drive.file',
+    aud: 'https://oauth2.googleapis.com/token', iat: now, exp: now+3600
+  }));
+  const unsigned = header+'.'+claim;
+
+  // Importar clave privada PEM
+  const pemBody = SA.privateKey.replace(/-----[^-]+-----/g,'').replace(/\s/g,'');
+  const der = Uint8Array.from(atob(pemBody), c=>c.charCodeAt(0));
+  const key = await crypto.subtle.importKey(
+    'pkcs8', der.buffer,
+    {name:'RSASSA-PKCS1-v1_5', hash:'SHA-256'},
+    false, ['sign']
+  );
+  const sig = await crypto.subtle.sign(
+    'RSASSA-PKCS1-v1_5', key,
+    new TextEncoder().encode(unsigned)
+  );
+  const jwt = unsigned+'.'+b64urlUint8(new Uint8Array(sig));
+
+  const resp = await fetch('https://oauth2.googleapis.com/token',{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:`grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`
   });
+  const data = await resp.json();
+  if(!data.access_token) throw new Error('No se pudo obtener token: '+(data.error_description||data.error));
+  return data.access_token;
 }
+
+function getToken(clientId) { return getServiceAccountToken(); }
 
 
 function resetDriveBtn() {
