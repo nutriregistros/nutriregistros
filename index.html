@@ -781,9 +781,10 @@ function showStatus(msg, type) {
   setTimeout(()=>{ el.className='status'; },6000);
 }
 
+const NR_CLIENT_ID = '373113771431-2a36p5kt610oov90p6dv8j2bslls42qp.apps.googleusercontent.com';
+
 async function enviarFormulario() {
-  const clientId = localStorage.getItem('nr_client_id');
-  if(!clientId) { openConfig(); return; }
+  const clientId = NR_CLIENT_ID;
   const btn = document.querySelector('.btn-drive');
   btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
   try {
@@ -795,8 +796,10 @@ async function enviarFormulario() {
     const pdf = renderPDF(tab);
     const bytes = pdf.output('arraybuffer');
     const fileName = getFileName(tab)+'.pdf';
+
+    const folderId = '1JYvH69lMVUs3Rd_kXpgBsVeorQpSvzxH';
     const fd = new FormData();
-    fd.append('metadata', new Blob([JSON.stringify({name:fileName, mimeType:'application/pdf'})],{type:'application/json'}));
+    fd.append('metadata', new Blob([JSON.stringify({name:fileName, mimeType:'application/pdf', parents:[folderId]})],{type:'application/json'}));
     fd.append('file', new Blob([bytes],{type:'application/pdf'}));
     const resp = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{
       method:'POST', headers:{'Authorization':'Bearer '+token}, body:fd
