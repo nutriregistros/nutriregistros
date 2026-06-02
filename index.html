@@ -14,104 +14,409 @@
     --white: #FFFFFF; --bg: #F7F6F2;
     --radius: 10px; --radius-sm: 6px;
     --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* HEADER */
   .header { background: var(--white); border-bottom: 1px solid var(--gray-border); padding: 0 24px; height: 58px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
   .logo { width: 34px; height: 34px; background: var(--teal-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
   .logo i { color: var(--teal); font-size: 16px; }
   .header-title { font-size: 17px; font-weight: 600; color: var(--teal); }
-  .nav-wrap { background: var(--white); border-bottom: 1px solid var(--gray-border); padding: 0 24px; display: flex; gap: 2px; }
-  .nav-btn { padding: 14px 18px; font-size: 13px; font-weight: 500; color: var(--text-sec); border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
+  .header-sub { font-size: 12px; color: var(--text-ter); margin-top: 1px; }
+  .patient-badge { margin-left: auto; font-size: 12px; background: var(--teal-light); color: var(--teal); padding: 4px 12px; border-radius: 20px; font-weight: 500; display: none; }
+
+  /* NAV */
+  .nav-wrap { background: var(--white); border-bottom: 1px solid var(--gray-border); padding: 0 24px; overflow-x: auto; display: flex; gap: 2px; }
+  .nav-btn { padding: 14px 18px; font-size: 13px; font-weight: 500; color: var(--text-sec); border: none; background: none; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 7px; }
+  .nav-btn:hover { color: var(--teal); }
   .nav-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
+  .nav-btn i { font-size: 14px; }
+
+  /* MAIN */
   .main { max-width: 760px; margin: 0 auto; padding: 24px 16px 100px; }
+
+  /* CARDS */
   .card { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius); padding: 20px; margin-bottom: 14px; box-shadow: var(--shadow); }
   .card-title { font-size: 13px; font-weight: 600; color: var(--teal); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-  .field label { font-size: 11.5px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; }
-  .field input, .field textarea { border: 1px solid var(--gray-border); border-radius: var(--radius-sm); padding: 8px 11px; font-size: 14px; width: 100%; }
-  .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--gray-border); padding: 12px 24px; display: flex; align-items: center; gap: 10px; z-index: 100; }
-  .btn { padding: 9px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--gray-border); background: var(--white); }
+  .card-title i { font-size: 14px; }
+
+  /* FIELDS */
+  .row { display: grid; gap: 12px; margin-bottom: 12px; }
+  .row-2 { grid-template-columns: 1fr 1fr; }
+  .row-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .row-1 { grid-template-columns: 1fr; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 11.5px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.04em; }
+  .field input, .field select, .field textarea {
+    border: 1px solid var(--gray-border); border-radius: var(--radius-sm);
+    padding: 8px 11px; font-size: 14px; font-family: inherit;
+    color: var(--text); background: var(--white); width: 100%; transition: border 0.15s;
+  }
+  .field textarea { resize: vertical; min-height: 72px; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--teal-mid); box-shadow: 0 0 0 3px rgba(15,110,86,0.08); }
+  .field input[readonly] { background: var(--gray-light); color: var(--text-sec); cursor: default; }
+  .section-label { font-size: 11px; font-weight: 700; color: var(--text-ter); text-transform: uppercase; letter-spacing: 0.07em; margin: 18px 0 10px; padding-bottom: 5px; border-bottom: 1px solid var(--gray-border); }
+
+  /* CHECKBOXES */
+  .check-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .check-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text); cursor: pointer; padding: 5px 10px; border: 1px solid var(--gray-border); border-radius: 20px; transition: all 0.15s; user-select: none; }
+  .check-item:hover { border-color: var(--teal-mid); background: var(--teal-light); }
+  .check-item input[type=checkbox] { width: 13px; height: 13px; accent-color: var(--teal); }
+  .check-item.checked { border-color: var(--teal); background: var(--teal-light); color: var(--teal); font-weight: 500; }
+
+  /* SLIDER */
+  .slider-row { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
+  .slider-label { font-size: 13px; color: var(--text-sec); min-width: 120px; }
+  .slider-row input[type=range] { flex: 1; accent-color: var(--teal); }
+  .slider-val { font-size: 14px; font-weight: 600; color: var(--teal); min-width: 24px; text-align: right; }
+
+  /* MEAL BLOCKS */
+  .meal-block { background: var(--gray-light); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 10px; border: 1px solid var(--gray-border); }
+  .meal-title { font-size: 12px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+
+  /* FREQ TABLE */
+  .freq-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .freq-table th { text-align: left; padding: 8px 10px; color: var(--text-sec); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--gray-border); background: var(--gray-light); }
+  .freq-table td { padding: 6px 10px; border-bottom: 1px solid var(--gray-border); }
+  .freq-table tr:hover td { background: var(--teal-light); }
+  .freq-table select, .freq-table input { font-size: 12px; padding: 4px 7px; border-radius: var(--radius-sm); border: 1px solid var(--gray-border); background: var(--white); color: var(--text); width: 100%; }
+
+  /* BOTTOM BAR */
+  .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--gray-border); padding: 12px 24px; display: flex; align-items: center; gap: 10px; box-shadow: 0 -4px 12px rgba(0,0,0,0.07); z-index: 100; }
+  .btn { padding: 9px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--gray-border); background: var(--white); color: var(--text); display: flex; align-items: center; gap: 7px; transition: all 0.15s; white-space: nowrap; }
+  .btn:hover { background: var(--gray-light); }
+  .btn:active { transform: scale(0.97); }
   .btn-primary { background: var(--teal); border-color: var(--teal); color: var(--white); }
-  .status { font-size: 12px; padding: 6px 14px; border-radius: var(--radius-sm); display: none; }
+  .btn-primary:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
+  .btn i { font-size: 14px; }
+  .status { font-size: 12px; padding: 6px 14px; border-radius: var(--radius-sm); display: none; align-items: center; gap: 6px; }
   .status.ok { background: var(--teal-light); color: var(--teal); display: flex; }
   .status.err { background: #FDECEA; color: #B91C1C; display: flex; }
+  .drive-hint { font-size: 11px; color: var(--text-ter); margin-left: auto; max-width: 280px; text-align: right; }
+
+  /* TABS */
+  .tab { display: none; }
+  .tab.active { display: block; }
+
+  /* RESPONSIVE */
+  @media (max-width: 520px) {
+    .row-2, .row-3 { grid-template-columns: 1fr; }
+    .header-sub { display: none; }
+    .bottom-bar { flex-wrap: wrap; }
+    .drive-hint { display: none !important; }
+  }
 </style>
 </head>
 <body>
 
 <div class="header">
   <div class="logo"><i class="fa-solid fa-leaf"></i></div>
-  <div class="header-title">NutriRegistros</div>
+  <div>
+    <div class="header-title">NutriRegistros</div>
+    <div class="header-sub">Ficha clínica digital</div>
+  </div>
+  <div class="patient-badge" id="patientBadge"></div>
 </div>
 
 <div class="nav-wrap">
-  <button class="nav-btn active">Ficha del Paciente</button>
+  <button class="nav-btn active" onclick="showTab('anamnesis', this)">
+    <i class="fa-solid fa-clipboard-list"></i><span>Anamnesis inicial</span>
+  </button>
+  <button class="nav-btn" onclick="showTab('mediciones', this)">
+    <i class="fa-solid fa-ruler"></i><span>Mediciones</span>
+  </button>
+  <button class="nav-btn" onclick="showTab('frecuencia', this)">
+    <i class="fa-solid fa-utensils"></i><span>Frecuencia alimentaria</span>
+  </button>
+  <button class="nav-btn" onclick="showTab('rutina', this)">
+    <i class="fa-solid fa-clock"></i><span>Rutina diaria</span>
+  </button>
 </div>
 
 <div class="main">
-  <div class="card">
-    <div class="card-title"><i class="fa-solid fa-user"></i> Datos del Paciente</div>
-    <div class="field"><label>Nombre y apellido *</label><input type="text" id="nombre" placeholder="Ej: García, Laura"></div>
-    <div class="field"><label>Observaciones</label><textarea id="obs" placeholder="Notas adicionales..."></textarea></div>
+
+  <!-- ══ TAB: ANAMNESIS ══ -->
+  <div class="tab active" id="tab-anamnesis">
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-user"></i> Datos personales</div>
+      <div class="row row-2">
+        <div class="field"><label>Nombre y apellido *</label><input type="text" id="nombre" placeholder="Ej: García, Laura" oninput="updateBadge()"></div>
+        <div class="field"><label>Fecha de nacimiento</label><input type="date" id="fecha_nac"></div>
+      </div>
+      <div class="row row-3">
+        <div class="field"><label>Sexo biológico</label>
+          <select id="sexo"><option value="">—</option><option>Femenino</option><option>Masculino</option><option>Otro</option></select>
+        </div>
+        <div class="field"><label>Ocupación</label><input type="text" id="ocupacion"></div>
+        <div class="field"><label>Contacto (tel/email)</label><input type="text" id="contacto"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-comment-medical"></i> Motivo de consulta</div>
+      <div class="field"><label>Motivo principal</label><textarea id="motivo" placeholder="¿Por qué busca atención nutricional?"></textarea></div>
+      <div class="field" style="margin-top:10px"><label>Objetivos del paciente</label><textarea id="objetivos" placeholder="¿Qué espera lograr con el tratamiento?"></textarea></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-notes-medical"></i> Antecedentes clínicos</div>
+      <div class="section-label">Patologías personales</div>
+      <div class="check-grid" id="patol-grid">
+        <label class="check-item"><input type="checkbox" value="Diabetes tipo 2"> Diabetes tipo 2</label>
+        <label class="check-item"><input type="checkbox" value="Hipertensión"> Hipertensión</label>
+        <label class="check-item"><input type="checkbox" value="Dislipemia"> Dislipemia</label>
+        <label class="check-item"><input type="checkbox" value="Hipotiroidismo"> Hipotiroidismo</label>
+        <label class="check-item"><input type="checkbox" value="SOP"> SOP</label>
+        <label class="check-item"><input type="checkbox" value="Resistencia a la insulina"> Resistencia a la insulina</label>
+        <label class="check-item"><input type="checkbox" value="Enfermedad celíaca"> Celiaquía</label>
+        <label class="check-item"><input type="checkbox" value="Obesidad"> Obesidad</label>
+        <label class="check-item"><input type="checkbox" value="Anemia"> Anemia</label>
+      </div>
+      <div class="row row-1" style="margin-top:10px">
+        <div class="field"><label>Otras patologías</label><input type="text" id="patol_otras" placeholder="Agregar otras..."></div>
+      </div>
+      <div class="row row-2" style="margin-top:8px">
+        <div class="field"><label>Antecedentes familiares relevantes</label><textarea id="ant_familiar" placeholder="Diabetes, enf. cardiovascular, cáncer..."></textarea></div>
+        <div class="field"><label>Medicamentos / suplementos actuales</label><textarea id="medicamentos"></textarea></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> Alergias e intolerancias</div>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox" value="Lactosa"> Lactosa</label>
+        <label class="check-item"><input type="checkbox" value="Gluten"> Gluten</label>
+        <label class="check-item"><input type="checkbox" value="Fructosa"> Fructosa</label>
+        <label class="check-item"><input type="checkbox" value="Mariscos"> Mariscos</label>
+        <label class="check-item"><input type="checkbox" value="Frutos secos"> Frutos secos</label>
+        <label class="check-item"><input type="checkbox" value="Huevo"> Huevo</label>
+        <label class="check-item"><input type="checkbox" value="Soja"> Soja</label>
+        <label class="check-item"><input type="checkbox" value="Pescado"> Pescado</label>
+      </div>
+      <div class="row row-1" style="margin-top:10px">
+        <div class="field"><label>Otras alergias / intolerancias</label><input type="text" id="alerg_otras"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-weight-scale"></i> Historia de peso</div>
+      <div class="row row-3">
+        <div class="field"><label>Peso actual (kg)</label><input type="number" id="peso_actual" step="0.1"></div>
+        <div class="field"><label>Peso habitual (kg)</label><input type="number" id="peso_habitual" step="0.1"></div>
+        <div class="field"><label>Peso ideal percibido (kg)</label><input type="number" id="peso_ideal" step="0.1"></div>
+      </div>
+      <div class="field"><label>Cambios recientes de peso (últimos 6 meses)</label><input type="text" id="cambios_peso" placeholder="Ej: Bajé 5kg sin intención"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-bed"></i> Sueño y estrés</div>
+      <div class="row row-2">
+        <div class="field">
+          <label>Calidad del sueño (1-10)</label>
+          <div class="slider-row"><input type="range" id="sueño_cal" min="1" max="10" value="5" oninput="this.nextElementSibling.textContent=this.value"><span class="slider-val">5</span></div>
+        </div>
+        <div class="field"><label>Horas de sueño/noche</label><input type="number" id="horas_sueño" step="0.5"></div>
+      </div>
+      <div class="field">
+        <label>Nivel de estrés percibido (1-10)</label>
+        <div class="slider-row"><input type="range" id="estres_cal" min="1" max="10" value="5" oninput="this.nextElementSibling.textContent=this.value"><span class="slider-val">5</span></div>
+      </div>
+      <div class="field"><label>Principales fuentes de estrés</label><textarea id="fuentes_estres"></textarea></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-person-running"></i> Actividad física</div>
+      <div class="row row-3">
+        <div class="field"><label>Tipo de actividad</label><input type="text" id="act_tipo"></div>
+        <div class="field"><label>Frecuencia semanal</label><input type="text" id="act_freq"></div>
+        <div class="field"><label>Duración (min/sesión)</label><input type="number" id="act_dur"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-pen-to-square"></i> Observaciones generales</div>
+      <textarea id="obs_anamnesis" placeholder="Notas adicionales del profesional..."></textarea>
+    </div>
   </div>
+
+  <!-- ══ TAB: MEDICIONES ══ -->
+  <div class="tab" id="tab-mediciones">
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-ruler"></i> Medidas Antropométricas</div>
+      <div class="row row-3">
+        <div class="field"><label>Peso (kg)</label><input type="number" id="m_peso" step="0.1" oninput="calcIMC()"></div>
+        <div class="field"><label>Talla (cm)</label><input type="number" id="m_talla" oninput="calcIMC()"></div>
+        <div class="field"><label>IMC</label><input type="text" id="m_imc" readonly></div>
+      </div>
+      <div class="row row-2">
+        <div class="field"><label>Cintura (cm)</label><input type="number" id="m_cintura" step="0.1" oninput="calcICC()"></div>
+        <div class="field"><label>Cadera (cm)</label><input type="number" id="m_cadera" step="0.1" oninput="calcICC()"></div>
+      </div>
+      <div class="row row-1">
+        <div class="field"><label>ICC (Cintura/Cadera)</label><input type="text" id="m_icc" readonly></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-chart-pie"></i> Composición Corporal</div>
+      <div class="row row-3">
+        <div class="field"><label>% Masa grasa</label><input type="number" id="m_grasa" step="0.1"></div>
+        <div class="field"><label>Masa muscular (kg)</label><input type="number" id="m_muscular" step="0.1"></div>
+        <div class="field"><label>Grasa visceral</label><input type="number" id="m_visceral"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TAB: FRECUENCIA ══ -->
+  <div class="tab" id="tab-frecuencia">
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-utensils"></i> Frecuencia Alimentaria</div>
+      <table class="freq-table">
+        <thead><tr><th>Grupo</th><th>Frecuencia</th><th>Porción</th></tr></thead>
+        <tbody id="freq-body">
+          <tr><td>Lácteos</td><td><select><option>Diario</option><option>Semanal</option><option>Ocasional</option><option>Nunca</option></select></td><td><input type="text"></td></tr>
+          <tr><td>Carnes / Huevos</td><td><select><option>Diario</option><option>Semanal</option><option>Ocasional</option><option>Nunca</option></select></td><td><input type="text"></td></tr>
+          <tr><td>Legumbres / Cereales</td><td><select><option>Diario</option><option>Semanal</option><option>Ocasional</option><option>Nunca</option></select></td><td><input type="text"></td></tr>
+          <tr><td>Frutas / Verduras</td><td><select><option>Diario</option><option>Semanal</option><option>Ocasional</option><option>Nunca</option></select></td><td><input type="text"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ TAB: RUTINA ══ -->
+  <div class="tab" id="tab-rutina">
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-clock"></i> Rutina Diaria y R24H</div>
+      <div id="meal-container"></div>
+      <div class="field" style="margin-top:20px"><label>Observaciones de rutina</label><textarea id="rd_obs"></textarea></div>
+    </div>
+  </div>
+
 </div>
 
 <div class="bottom-bar">
-  <button class="btn btn-primary" onclick="enviarFormulario()" id="btnEnviar">
+  <button class="btn" onclick="generatePDF()"><i class="fa-solid fa-file-pdf"></i> PDF Local</button>
+  <button class="btn btn-primary btn-drive" onclick="enviarFormulario()">
     <i class="fa-solid fa-paper-plane"></i> Enviar a Drive
   </button>
   <div id="statusMsg" class="status"></div>
+  <div class="drive-hint" id="driveHint">Destino: Google Drive (Apps Script)</div>
 </div>
 
 <script>
 // --- CONFIGURACIÓN ---
-// PEGA AQUÍ LA URL QUE COPIASTE DE GOOGLE APPS SCRIPT
 const APPS_SCRIPT_URL = "TU_URL_DE_APPS_SCRIPT_AQUI";
 
+const MEALS = ["Desayuno", "Media mañana", "Almuerzo", "Merienda", "Cena", "Extras"];
+
+function init() {
+  const mc = document.getElementById('meal-container');
+  MEALS.forEach(m => {
+    const id = m.replace(/\s/g,'_').toLowerCase();
+    mc.innerHTML += `<div class="meal-block"><div class="meal-title">${m}</div>
+      <div class="row row-2">
+        <div class="field"><label>¿Qué comió?</label><textarea id="meal_${id}" style="min-height:60px"></textarea></div>
+        <div class="field"><label>Hora / Lugar</label><input type="text" id="meal_${id}_ctx"></div>
+      </div></div>`;
+  });
+  document.querySelectorAll('.check-item input').forEach(cb => {
+    cb.addEventListener('change', () => cb.closest('.check-item').classList.toggle('checked', cb.checked));
+  });
+}
+
+function showTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function updateBadge() {
+  const name = document.getElementById('nombre').value;
+  const badge = document.getElementById('patientBadge');
+  if(name) { badge.textContent = name; badge.style.display='block'; }
+  else badge.style.display='none';
+}
+
+function calcIMC() {
+  const p = parseFloat(document.getElementById('m_peso').value);
+  const t = parseFloat(document.getElementById('m_talla').value) / 100;
+  document.getElementById('m_imc').value = (p && t) ? (p/(t*t)).toFixed(1) : '';
+}
+
+function calcICC() {
+  const c = parseFloat(document.getElementById('m_cintura').value);
+  const ca = parseFloat(document.getElementById('m_cadera').value);
+  document.getElementById('m_icc').value = (c && ca) ? (c/ca).toFixed(2) : '';
+}
+
+function getFileName() {
+  const name = document.getElementById('nombre').value || 'Paciente';
+  return `${name} - Ficha - ${new Date().toLocaleDateString('es-AR').replace(/\//g,'-')}`;
+}
+
+// GENERACIÓN DE PDF COMPLETO
+function buildPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  let y = 20;
+  const addText = (text, size=10, style='normal') => {
+    doc.setFontSize(size); doc.setFont('helvetica', style);
+    doc.text(text, 20, y); y += (size/2) + 2;
+    if(y > 280) { doc.addPage(); y = 20; }
+  };
+
+  addText("FICHA CLÍNICA NUTRICIONAL", 16, 'bold');
+  addText(`Paciente: ${document.getElementById('nombre').value || '—'}`, 12, 'bold');
+  addText(`Fecha: ${new Date().toLocaleDateString('es-AR')}`, 10);
+  y += 5;
+
+  addText("ANAMNESIS", 12, 'bold');
+  addText(`Motivo: ${document.getElementById('motivo').value || '—'}`);
+  addText(`Objetivos: ${document.getElementById('objetivos').value || '—'}`);
+  y += 5;
+
+  addText("MEDICIONES", 12, 'bold');
+  addText(`Peso: ${document.getElementById('m_peso').value || '—'} kg · Talla: ${document.getElementById('m_talla').value || '—'} cm`);
+  addText(`IMC: ${document.getElementById('m_imc').value || '—'} · ICC: ${document.getElementById('m_icc').value || '—'}`);
+  
+  return doc;
+}
+
+function generatePDF() {
+  const doc = buildPDF();
+  doc.save(getFileName()+'.pdf');
+  showStatus('PDF descargado localmente', 'ok');
+}
+
 async function enviarFormulario() {
-  const btn = document.getElementById('btnEnviar');
+  const btn = document.querySelector('.btn-drive');
   const nombre = document.getElementById('nombre').value;
   
-  if (!nombre) { alert("Por favor, pon el nombre del paciente."); return; }
-  if (APPS_SCRIPT_URL === "TU_URL_DE_APPS_SCRIPT_AQUI") { alert("Debes configurar la URL de Apps Script primero."); return; }
+  if (!nombre) { alert("Por favor, ingresa el nombre del paciente."); return; }
+  if (APPS_SCRIPT_URL === "TU_URL_DE_APPS_SCRIPT_AQUI") { alert("Debes configurar la URL de Apps Script en el código."); return; }
 
   btn.disabled = true;
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
   
   try {
-    // 1. Generar PDF
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.text("Ficha Nutricional", 20, 20);
-    doc.text(`Paciente: ${nombre}`, 20, 30);
-    doc.text(`Notas: ${document.getElementById('obs').value}`, 20, 40);
-    
-    // Convertir PDF a Base64 para enviarlo
-    const pdfOutput = doc.output('datauristring').split(',')[1];
-    const fileName = `${nombre} - Ficha - ${new Date().toLocaleDateString()}.pdf`;
+    const doc = buildPDF();
+    const pdfBase64 = doc.output('datauristring').split(',')[1];
+    const fileName = getFileName() + '.pdf';
 
-    // 2. Enviar al "Puente" de Google
-    const response = await fetch(APPS_SCRIPT_URL, {
+    await fetch(APPS_SCRIPT_URL, {
       method: "POST",
-      mode: "no-cors", // Importante para evitar errores de CORS
+      mode: "no-cors",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        base64: pdfOutput,
-        name: fileName
-      })
+      body: JSON.stringify({ base64: pdfBase64, name: fileName })
     });
 
-    // Como usamos 'no-cors', no podemos leer la respuesta, pero si no hay error es que se envió
-    showStatus('✓ Enviado a tu Drive', 'ok');
-    document.getElementById('nombre').value = "";
-    document.getElementById('obs').value = "";
-    
+    showStatus('✓ Guardado en tu Drive', 'ok');
   } catch (e) {
     showStatus('Error al enviar', 'err');
     console.error(e);
   }
-  
   btn.disabled = false;
   btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar a Drive';
 }
@@ -121,6 +426,8 @@ function showStatus(msg, type) {
   el.textContent = msg; el.className = 'status ' + type;
   setTimeout(() => { el.className = 'status'; }, 5000);
 }
+
+init();
 </script>
 </body>
 </html>
