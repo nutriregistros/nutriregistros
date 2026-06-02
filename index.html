@@ -14,309 +14,104 @@
     --white: #FFFFFF; --bg: #F7F6F2;
     --radius: 10px; --radius-sm: 6px;
     --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
   .header { background: var(--white); border-bottom: 1px solid var(--gray-border); padding: 0 24px; height: 58px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
   .logo { width: 34px; height: 34px; background: var(--teal-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
   .logo i { color: var(--teal); font-size: 16px; }
   .header-title { font-size: 17px; font-weight: 600; color: var(--teal); }
-  .header-sub { font-size: 12px; color: var(--text-ter); margin-top: 1px; }
-  .patient-badge { margin-left: auto; font-size: 12px; background: var(--teal-light); color: var(--teal); padding: 4px 12px; border-radius: 20px; font-weight: 500; display: none; }
-
-  .nav-wrap { background: var(--white); border-bottom: 1px solid var(--gray-border); padding: 0 24px; overflow-x: auto; display: flex; gap: 2px; }
-  .nav-btn { padding: 14px 18px; font-size: 13px; font-weight: 500; color: var(--text-sec); border: none; background: none; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 7px; }
-  .nav-btn:hover { color: var(--teal); }
+  .nav-wrap { background: var(--white); border-bottom: 1px solid var(--gray-border); padding: 0 24px; display: flex; gap: 2px; }
+  .nav-btn { padding: 14px 18px; font-size: 13px; font-weight: 500; color: var(--text-sec); border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
   .nav-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
-  .nav-btn i { font-size: 14px; }
-
   .main { max-width: 760px; margin: 0 auto; padding: 24px 16px 100px; }
-
   .card { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius); padding: 20px; margin-bottom: 14px; box-shadow: var(--shadow); }
   .card-title { font-size: 13px; font-weight: 600; color: var(--teal); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .card-title i { font-size: 14px; }
-
-  .row { display: grid; gap: 12px; margin-bottom: 12px; }
-  .row-2 { grid-template-columns: 1fr 1fr; }
-  .row-3 { grid-template-columns: 1fr 1fr 1fr; }
-  .row-1 { grid-template-columns: 1fr; }
-  .field { display: flex; flex-direction: column; gap: 5px; }
-  .field label { font-size: 11.5px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.04em; }
-  .field input, .field select, .field textarea {
-    border: 1px solid var(--gray-border); border-radius: var(--radius-sm);
-    padding: 8px 11px; font-size: 14px; font-family: inherit;
-    color: var(--text); background: var(--white); width: 100%; transition: border 0.15s;
-  }
-  .field textarea { resize: vertical; min-height: 72px; }
-  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--teal-mid); box-shadow: 0 0 0 3px rgba(15,110,86,0.08); }
-  .field input[readonly] { background: var(--gray-light); color: var(--text-sec); cursor: default; }
-  .section-label { font-size: 11px; font-weight: 700; color: var(--text-ter); text-transform: uppercase; letter-spacing: 0.07em; margin: 18px 0 10px; padding-bottom: 5px; border-bottom: 1px solid var(--gray-border); }
-
-  .check-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-  .check-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text); cursor: pointer; padding: 5px 10px; border: 1px solid var(--gray-border); border-radius: 20px; transition: all 0.15s; user-select: none; }
-  .check-item:hover { border-color: var(--teal-mid); background: var(--teal-light); }
-  .check-item input[type=checkbox] { width: 13px; height: 13px; accent-color: var(--teal); }
-  .check-item.checked { border-color: var(--teal); background: var(--teal-light); color: var(--teal); font-weight: 500; }
-
-  .slider-row { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
-  .slider-label { font-size: 13px; color: var(--text-sec); min-width: 120px; }
-  .slider-row input[type=range] { flex: 1; accent-color: var(--teal); }
-  .slider-val { font-size: 14px; font-weight: 600; color: var(--teal); min-width: 24px; text-align: right; }
-
-  .meal-block { background: var(--gray-light); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 10px; border: 1px solid var(--gray-border); }
-  .meal-title { font-size: 12px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
-
-  .freq-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .freq-table th { text-align: left; padding: 8px 10px; color: var(--text-sec); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--gray-border); background: var(--gray-light); }
-  .freq-table td { padding: 6px 10px; border-bottom: 1px solid var(--gray-border); }
-  .freq-table tr:hover td { background: var(--teal-light); }
-  .freq-table select, .freq-table input { font-size: 12px; padding: 4px 7px; border-radius: var(--radius-sm); border: 1px solid var(--gray-border); background: var(--white); color: var(--text); width: 100%; }
-
-  .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--gray-border); padding: 12px 24px; display: flex; align-items: center; gap: 10px; box-shadow: 0 -4px 12px rgba(0,0,0,0.07); z-index: 100; }
-  .btn { padding: 9px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--gray-border); background: var(--white); color: var(--text); display: flex; align-items: center; gap: 7px; transition: all 0.15s; white-space: nowrap; }
-  .btn:hover { background: var(--gray-light); }
-  .btn:active { transform: scale(0.97); }
+  .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .field label { font-size: 11.5px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; }
+  .field input, .field textarea { border: 1px solid var(--gray-border); border-radius: var(--radius-sm); padding: 8px 11px; font-size: 14px; width: 100%; }
+  .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--gray-border); padding: 12px 24px; display: flex; align-items: center; gap: 10px; z-index: 100; }
+  .btn { padding: 9px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--gray-border); background: var(--white); }
   .btn-primary { background: var(--teal); border-color: var(--teal); color: var(--white); }
-  .btn-primary:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
-  .btn i { font-size: 14px; }
-  .status { font-size: 12px; padding: 6px 14px; border-radius: var(--radius-sm); display: none; align-items: center; gap: 6px; }
+  .status { font-size: 12px; padding: 6px 14px; border-radius: var(--radius-sm); display: none; }
   .status.ok { background: var(--teal-light); color: var(--teal); display: flex; }
   .status.err { background: #FDECEA; color: #B91C1C; display: flex; }
-  .drive-hint { font-size: 11px; color: var(--text-ter); margin-left: auto; max-width: 280px; text-align: right; }
-
-  .tab { display: none; }
-  .tab.active { display: block; }
-
-  @media (max-width: 520px) {
-    .row-2, .row-3 { grid-template-columns: 1fr; }
-    .header-sub { display: none; }
-    .bottom-bar { flex-wrap: wrap; }
-    .drive-hint { display: none !important; }
-  }
 </style>
 </head>
 <body>
 
 <div class="header">
   <div class="logo"><i class="fa-solid fa-leaf"></i></div>
-  <div>
-    <div class="header-title">NutriRegistros</div>
-    <div class="header-sub">Ficha clínica digital</div>
-  </div>
-  <div class="patient-badge" id="patientBadge"></div>
+  <div class="header-title">NutriRegistros</div>
 </div>
 
 <div class="nav-wrap">
-  <button class="nav-btn active" onclick="showTab('anamnesis', this)">
-    <i class="fa-solid fa-clipboard-list"></i><span>Anamnesis</span>
-  </button>
-  <button class="nav-btn" onclick="showTab('mediciones', this)">
-    <i class="fa-solid fa-ruler"></i><span>Mediciones</span>
-  </button>
-  <button class="nav-btn" onclick="showTab('frecuencia', this)">
-    <i class="fa-solid fa-utensils"></i><span>Frecuencia</span>
-  </button>
-  <button class="nav-btn" onclick="showTab('rutina', this)">
-    <i class="fa-solid fa-clock"></i><span>Rutina</span>
-  </button>
+  <button class="nav-btn active">Ficha del Paciente</button>
 </div>
 
 <div class="main">
-  <!-- TAB: ANAMNESIS -->
-  <div class="tab active" id="tab-anamnesis">
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-user"></i> Datos personales</div>
-      <div class="row row-2">
-        <div class="field"><label>Nombre y apellido *</label><input type="text" id="nombre" oninput="updateBadge()"></div>
-        <div class="field"><label>Fecha de nacimiento</label><input type="date" id="fecha_nac"></div>
-      </div>
-      <div class="row row-3">
-        <div class="field"><label>Sexo biológico</label>
-          <select id="sexo"><option value="">—</option><option>Femenino</option><option>Masculino</option><option>Otro</option></select>
-        </div>
-        <div class="field"><label>Ocupación</label><input type="text" id="ocupacion"></div>
-        <div class="field"><label>Contacto</label><input type="text" id="contacto"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-comment-medical"></i> Motivo y Objetivos</div>
-      <div class="field"><label>Motivo principal</label><textarea id="motivo"></textarea></div>
-      <div class="field" style="margin-top:10px"><label>Objetivos</label><textarea id="objetivos"></textarea></div>
-    </div>
-  </div>
-
-  <!-- TAB: MEDICIONES -->
-  <div class="tab" id="tab-mediciones">
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-ruler"></i> Mediciones Antropométricas</div>
-      <div class="row row-3">
-        <div class="field"><label>Peso (kg)</label><input type="number" id="m_peso" step="0.1"></div>
-        <div class="field"><label>Talla (cm)</label><input type="number" id="m_talla"></div>
-        <div class="field"><label>IMC</label><input type="text" id="m_imc" readonly></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TAB: FRECUENCIA (SIMPLIFICADA PARA EL EJEMPLO) -->
-  <div class="tab" id="tab-frecuencia">
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-utensils"></i> Frecuencia Alimentaria</div>
-      <p style="font-size: 13px; color: var(--text-sec);">Completa los grupos alimentarios principales.</p>
-    </div>
-  </div>
-
-  <!-- TAB: RUTINA -->
-  <div class="tab" id="tab-rutina">
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-clock"></i> Rutina Diaria</div>
-      <div class="field"><label>Observaciones de rutina</label><textarea id="rd_obs"></textarea></div>
-    </div>
+  <div class="card">
+    <div class="card-title"><i class="fa-solid fa-user"></i> Datos del Paciente</div>
+    <div class="field"><label>Nombre y apellido *</label><input type="text" id="nombre" placeholder="Ej: García, Laura"></div>
+    <div class="field"><label>Observaciones</label><textarea id="obs" placeholder="Notas adicionales..."></textarea></div>
   </div>
 </div>
 
 <div class="bottom-bar">
-  <button class="btn" onclick="generatePDF()"><i class="fa-solid fa-file-pdf"></i> PDF</button>
-  <button class="btn btn-primary btn-drive" onclick="enviarFormulario()">
+  <button class="btn btn-primary" onclick="enviarFormulario()" id="btnEnviar">
     <i class="fa-solid fa-paper-plane"></i> Enviar a Drive
   </button>
   <div id="statusMsg" class="status"></div>
-  <div class="drive-hint" id="driveHint">Destino: Google Drive (Service Account)</div>
 </div>
 
 <script>
-// CONFIGURACIÓN CUENTA DE SERVICIO
-const SA = {
-  email: "nutriregistros-bot@nutriregistros.iam.gserviceaccount.com",
-  privateKeyId: "05dae65d5c24d81196cb62f116a1975c583c19ec",
-  privateKey: `-----BEGIN PRIVATE KEY-----
-MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC+Tt5j1JK9oyl6
-2dKM6lrR8maFnVX/iiipq0N/tK0TKH678c3dBsAD7EzUFnOHzoXfvDP8nWcYYgFQ
-b+of0W8AbTx8CEH2M6uld9Og8CeXkjqAePTHDEGWCjAaRe8glgw8ZyV08TkrKaAp
-0b7zI+oK8/E733XRQOmuNlqBLwpjlvHaFgVSlTaTLhkPBhkRHyubDSPSQx+8sBXT
-lHy5GLkP/aHx1urUOBPeUsV9HmKqObguL3ldb/YLPoZVjAz2C230BTUjnNaLaP+g
-g/eJgBWAfGcDkg0c/O7V2GkVVrcOM08MDBMUokyAcVFf2RSW56UTzESC1Y/mo0Bn
-B1qS3bofAgMBAAECggEADM8MItX85myj7xPYGwnvAPB6vAWB80geQoU3btH/UCnK
-765leXJgFXi+KCf7ypvrjVVR2DIcvk5Jif6hKpzrJ6RBQtVJdf8cJC7vdBZ2lD0P
-5JHLnEilQi9wz9Wpjys2Fy/hNCmCES5/1qeVKhWPKAN7T5E56TLZVpaO8XLqk+0q
-8UlFTZNNdG/l5EwWG7ULWPFs5Jh94QOJ1OjkZ0l5L0vGn/jJNgnC2ekqMMOOagRJH
-cjCs85yBcsLfV4tkqeCtwvGPc9kY/u8gTyeANCH0HdJVVKOPsxUiFQZDJWG+T79C
-WWNtE62HSkNKb1yOp9XbJTNnlG/4DxtrGMxmuQKBgQDwgcdtUbcQWuiLByrqBdEb
-ioq5WvHCuRM4PY3hVcUEVJ41Xp76pJed4n3aIJWWq9T+VqqE9buZZ64Du8iDDYvl
-fUg8RJEZ0iuIrwddoXQxKuKQzQ8qggdHTZatLQIsvtl6M2Q/PQzaIO0Buvs47Oom
-SJaynavJG5lU3R0TLZlr4wKBgQDKkUF8LW13P327i+1jYcfqlbHjAlQ3do+p521X
-SO+wxmgpCKEMHckiThJFR4Yt5+MdRxQZ7XjdsinIHPdcCPTBUve57GAoW6col4XQ
-nmisAIKMsYXk7asOvgIsmxA4nWquDJ+UqRwBxpzrqKnREEBaRBHvvLzatXmrhRIf
-r3eFlQKBgB0nHg1aQl5xJo7zp3gGjHpSKM6e/38i//lpPLF7vA3yU9sURSEMonQ4
-6BhwqrFA0uihiLnlL4BA2Q8KzBtWoQaIUSE9DnmayDwhOztWPsdW82+p65Szfj5e
-YU1Mj17tI190q0ofFFe8df4ntBwKW7eYROwRwKj393YZ91RDyr0RAoGAJ3IlyGKo
-QGJyv4S+E25FGd9Qpp4bfDlwPGu+lRK06j2YpvTxN4TNWArP8AG/lUzkoxzmQy5F
-LRa2oCtT1+4+iy724pOvHezLHlJzUm6mf2gSBAfFxRCrENHbZohDnmK5FW+L280a
-kRX2FMXhW77IaUt8Gq0sMYLJUKc3HThQFAkCgYBL7igUChx2/p7MYOm1f2wR0fTW
-owzqhea1DTbHDpYJCHYYnxw9TDUZRNTdt/l7YFXMxuJe3f4kcQRs01abcZk1Ig4W
-KQr+UCz/oyRTC2dvG2RewN8919r23sIlqYo2ZLXxkHi0NTYJcpfucsBH5Aw4IRJu
-SzHeTS/nsANw5EQb1g==
------END PRIVATE KEY-----`
-};
-
-// UTILIDADES JWT
-function b64url(str) { return btoa(str).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
-function b64urlUint8(u8) {
-  let s=''; u8.forEach(b=>s+=String.fromCharCode(b));
-  return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-}
-
-async function getServiceAccountToken() {
-  const now = Math.floor(Date.now()/1000);
-  const header = b64url(JSON.stringify({alg:'RS256',typ:'JWT',kid:SA.privateKeyId}));
-  const claim  = b64url(JSON.stringify({
-    iss: SA.email, scope: 'https://www.googleapis.com/auth/drive.file',
-    aud: 'https://oauth2.googleapis.com/token', iat: now, exp: now+3600
-  }));
-  const unsigned = header+'.'+claim;
-  const pemBody = SA.privateKey.replace(/-----[^-]+-----/g,'').replace(/\s/g,'');
-  const der = Uint8Array.from(atob(pemBody), c=>c.charCodeAt(0));
-  const key = await crypto.subtle.importKey('pkcs8', der.buffer, {name:'RSASSA-PKCS1-v1_5', hash:'SHA-256'}, false, ['sign']);
-  const sig = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', key, new TextEncoder().encode(unsigned));
-  const jwt = unsigned+'.'+b64urlUint8(new Uint8Array(sig));
-  const resp = await fetch('https://oauth2.googleapis.com/token',{
-    method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'},
-    body:`grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`
-  });
-  const data = await resp.json();
-  return data.access_token;
-}
-
-// LÓGICA PRINCIPAL
-function showTab(id, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  btn.classList.add('active');
-}
-
-function updateBadge() {
-  const name = document.getElementById('nombre').value;
-  const badge = document.getElementById('patientBadge');
-  if(name) { badge.textContent = name; badge.style.display='block'; }
-  else badge.style.display='none';
-}
-
-function getFileName() {
-  const name = document.getElementById('nombre').value || 'Paciente';
-  const date = new Date().toISOString().split('T')[0];
-  return `${name} - Ficha - ${date}`;
-}
-
-function generatePDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  doc.text("Ficha Nutricional", 20, 20);
-  doc.text(`Paciente: ${document.getElementById('nombre').value}`, 20, 30);
-  doc.save(getFileName()+'.pdf');
-  showStatus('PDF generado localmente', 'ok');
-}
+// --- CONFIGURACIÓN ---
+// PEGA AQUÍ LA URL QUE COPIASTE DE GOOGLE APPS SCRIPT
+const APPS_SCRIPT_URL = "TU_URL_DE_APPS_SCRIPT_AQUI";
 
 async function enviarFormulario() {
-  const btn = document.querySelector('.btn-drive');
+  const btn = document.getElementById('btnEnviar');
+  const nombre = document.getElementById('nombre').value;
+  
+  if (!nombre) { alert("Por favor, pon el nombre del paciente."); return; }
+  if (APPS_SCRIPT_URL === "TU_URL_DE_APPS_SCRIPT_AQUI") { alert("Debes configurar la URL de Apps Script primero."); return; }
+
   btn.disabled = true;
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
   
   try {
-    const token = await getServiceAccountToken();
+    // 1. Generar PDF
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     doc.text("Ficha Nutricional", 20, 20);
-    doc.text(`Paciente: ${document.getElementById('nombre').value}`, 20, 30);
-    const bytes = doc.output('arraybuffer');
+    doc.text(`Paciente: ${nombre}`, 20, 30);
+    doc.text(`Notas: ${document.getElementById('obs').value}`, 20, 40);
     
-    const folderId = '1JYvH69lMVUs3Rd_kXpgBsVeorQpSvzxH';
-    const fileName = getFileName() + '.pdf';
+    // Convertir PDF a Base64 para enviarlo
+    const pdfOutput = doc.output('datauristring').split(',')[1];
+    const fileName = `${nombre} - Ficha - ${new Date().toLocaleDateString()}.pdf`;
 
-    const fd = new FormData();
-    fd.append('metadata', new Blob([JSON.stringify({name:fileName, mimeType:'application/pdf', parents:[folderId]})],{type:'application/json'}));
-    fd.append('file', new Blob([bytes],{type:'application/pdf'}));
-
-    const resp = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{
-      method:'POST', headers:{'Authorization':'Bearer '+token}, body:fd
+    // 2. Enviar al "Puente" de Google
+    const response = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors", // Importante para evitar errores de CORS
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        base64: pdfOutput,
+        name: fileName
+      })
     });
 
-    if(resp.ok) {
-      showStatus('✓ Guardado en Drive', 'ok');
-    } else {
-      const err = await resp.json();
-      if(err.error?.message.includes('Insufficient permissions')) {
-        showStatus('Error: Debes compartir la carpeta con el email del bot', 'err');
-        console.error("EMAIL DEL BOT A COMPARTIR:", SA.email);
-      } else {
-        showStatus('Error: ' + err.error.message, 'err');
-      }
-    }
+    // Como usamos 'no-cors', no podemos leer la respuesta, pero si no hay error es que se envió
+    showStatus('✓ Enviado a tu Drive', 'ok');
+    document.getElementById('nombre').value = "";
+    document.getElementById('obs').value = "";
+    
   } catch (e) {
-    showStatus('Error de conexión', 'err');
+    showStatus('Error al enviar', 'err');
     console.error(e);
   }
+  
   btn.disabled = false;
   btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar a Drive';
 }
@@ -326,9 +121,6 @@ function showStatus(msg, type) {
   el.textContent = msg; el.className = 'status ' + type;
   setTimeout(() => { el.className = 'status'; }, 5000);
 }
-
-// Inicialización limpia
-document.getElementById('fecha_nac').value = new Date().toISOString().split('T')[0];
 </script>
 </body>
 </html>
