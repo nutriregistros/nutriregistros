@@ -90,23 +90,11 @@
   .btn:active { transform: scale(0.97); }
   .btn-primary { background: var(--teal); border-color: var(--teal); color: var(--white); }
   .btn-primary:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
-  .btn-drive { background: var(--white); }
   .btn i { font-size: 14px; }
   .status { font-size: 12px; padding: 6px 14px; border-radius: var(--radius-sm); display: none; align-items: center; gap: 6px; }
   .status.ok { background: var(--teal-light); color: var(--teal); display: flex; }
   .status.err { background: #FDECEA; color: #B91C1C; display: flex; }
   .drive-hint { font-size: 11px; color: var(--text-ter); margin-left: auto; max-width: 280px; text-align: right; display: none; }
-
-  /* CONFIG MODAL */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: none; align-items: center; justify-content: center; padding: 16px; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--white); border-radius: var(--radius); padding: 28px; max-width: 480px; width: 100%; box-shadow: var(--shadow-md); }
-  .modal h2 { font-size: 16px; font-weight: 600; color: var(--teal); margin-bottom: 8px; }
-  .modal p { font-size: 13px; color: var(--text-sec); margin-bottom: 16px; line-height: 1.6; }
-  .modal input { width: 100%; border: 1px solid var(--gray-border); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 13px; margin-bottom: 16px; }
-  .modal input:focus { outline: none; border-color: var(--teal-mid); }
-  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
-  .modal a { color: var(--teal); font-size: 12px; }
 
   /* TABS */
   .tab { display: none; }
@@ -133,9 +121,6 @@
     <div class="header-sub">Ficha clínica digital</div>
   </div>
   <div class="patient-badge" id="patientBadge"></div>
-  <button class="btn" style="margin-left:auto; padding:6px 12px; font-size:12px; display:none;" onclick="openConfig()" id="configBtn">
-    <i class="fa-solid fa-gear"></i> <span>Configurar Drive</span>
-  </button>
 </div>
 
 <div class="nav-wrap">
@@ -451,27 +436,14 @@
 
 <!-- BOTTOM BAR -->
 <div class="bottom-bar">
-  <button class="btn btn-primary btn-drive" onclick="enviarFormulario()"><i class="fa-solid fa-paper-plane"></i> Enviar</button>
+  <button class="btn btn-primary" onclick="enviarFormulario()"><i class="fa-solid fa-paper-plane"></i> Enviar</button>
   <div class="status" id="statusMsg"></div>
   <div class="drive-hint" id="driveHint">Archivo: <strong id="fileNamePreview"></strong></div>
 </div>
 
-<!-- CONFIG MODAL -->
-<div class="modal-overlay" id="configModal">
-  <div class="modal">
-    <h2><i class="fa-solid fa-gear"></i> Configurar Google Drive</h2>
-    <p>Pegá tu <strong>Client ID de Google</strong> para activar la subida automática a Drive.<br>
-    <a href="https://console.cloud.google.com/" target="_blank">Crear Client ID en Google Cloud Console →</a></p>
-    <input type="text" id="clientIdInput" placeholder="000000000000-xxxxxxxx.apps.googleusercontent.com">
-    <div class="modal-actions">
-      <button class="btn" onclick="closeConfig()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveConfig()"><i class="fa-solid fa-check"></i> Guardar</button>
-    </div>
-  </div>
-</div>
-
 <script>
-// ── DATA ──
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwndIJLCuR92A_TNVTUcA45TvRHV7BIE9kk0tmGh5p-GO_aaJWFt6IoIttKSNT9tDru7Q/exec';
+
 const MEALS = ['Desayuno','Media mañana','Almuerzo','Merienda','Cena','Post-cena'];
 const FREQ_OPTIONS = ['Nunca','1–3 veces/mes','1–2 veces/sem','3–4 veces/sem','5–6 veces/sem','1 vez/día','2+ veces/día'];
 const FOOD_GROUPS = [
@@ -486,9 +458,7 @@ const FOOD_GROUPS = [
   'Golosinas / dulces','Snacks salados','Comida rápida / delivery',
 ];
 
-// ── INIT ──
 function init() {
-  // Freq table
   const fb = document.getElementById('freq-body');
   FOOD_GROUPS.forEach(name => {
     const tr = document.createElement('tr');
@@ -496,7 +466,6 @@ function init() {
     tr.innerHTML = `<td>${name}</td><td><select>${opts}</select></td><td><input type="text" placeholder="Ej: 1 plato"></td>`;
     fb.appendChild(tr);
   });
-  // Meals
   const mc = document.getElementById('meals-container');
   MEALS.forEach(m => {
     const id = m.replace(/\s/g,'_').toLowerCase();
@@ -506,21 +475,15 @@ function init() {
         <div class="field"><label>Hora · lugar · acompañante</label><input type="text" id="meal_${id}_ctx" placeholder="Ej: 8:30 hs, en casa, solo"></div>
       </div></div>`;
   });
-  // Defaults
   const today = new Date().toISOString().split('T')[0];
   document.querySelectorAll('input[type=date]').forEach(el => { if(!el.value) el.value = today; });
   const [y,mo] = today.split('-');
   document.querySelectorAll('input[type=month]').forEach(el => { if(!el.value) el.value = `${y}-${mo}`; });
-  // Auto-calc
   ['m_peso','m_talla'].forEach(id => document.getElementById(id)?.addEventListener('input', calcIMC));
   ['m_cintura','m_cadera'].forEach(id => document.getElementById(id)?.addEventListener('input', calcICC));
-  // Checkbox styling
   document.querySelectorAll('.check-item input').forEach(cb => {
     cb.addEventListener('change', () => cb.closest('.check-item').classList.toggle('checked', cb.checked));
   });
-  // Load saved client id
-  const saved = localStorage.getItem('nr_client_id');
-  if(saved) document.getElementById('clientIdInput').value = saved;
   updateFileName();
 }
 
@@ -535,7 +498,6 @@ function calcICC() {
   document.getElementById('m_icc').value = (c && ca) ? (c/ca).toFixed(2) : '';
 }
 
-// ── TABS ──
 function showTab(id, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -549,7 +511,6 @@ function getActiveTab() {
   return a ? a.id.replace('tab-','') : 'anamnesis';
 }
 
-// ── PATIENT BADGE ──
 function updateBadge() {
   const ids = ['nombre','med_nombre','fa_nombre','rd_nombre'];
   const name = ids.map(id => document.getElementById(id)?.value).find(v => v);
@@ -559,7 +520,6 @@ function updateBadge() {
   updateFileName();
 }
 
-// ── FILE NAME ──
 function getFileName(tab) {
   const nameField = { anamnesis:'nombre', mediciones:'med_nombre', frecuencia:'fa_nombre', rutina:'rd_nombre' };
   const dateField = { anamnesis:'fecha_nac', mediciones:'med_fecha', frecuencia:'fa_mes', rutina:'rd_fecha' };
@@ -575,17 +535,6 @@ function updateFileName() {
   const fn = getFileName(tab) + '.pdf';
   document.getElementById('fileNamePreview').textContent = fn;
   document.getElementById('driveHint').style.display = 'block';
-}
-
-// ── PDF BUILD ──
-function getChecks(cls) {
-  return [...document.querySelectorAll(`.check-item input[type=checkbox][value]:checked`)]
-    .filter(cb => cb.closest('[id]') === null || true)
-    .map(cb => cb.value);
-}
-
-function getAllCheckedInCard(cardEl) {
-  return [...cardEl.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value).join(', ') || '—';
 }
 
 function v(id) { return document.getElementById(id)?.value || '—'; }
@@ -706,7 +655,6 @@ function renderPDF(tab) {
   const ml = 20, mw = 170;
   let y = 20;
   const nl = (n=6) => { y+=n; if(y>275){doc.addPage(); y=20;} };
-
   lines.forEach(({t,s}) => {
     if(s==='title') {
       doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(15,110,86);
@@ -731,90 +679,51 @@ function renderPDF(tab) {
   return doc;
 }
 
-function generatePDF() {
-  const tab = getActiveTab();
-  renderPDF(tab).save(getFileName(tab)+'.pdf');
-  showStatus('PDF descargado correctamente.','ok');
-}
-
-// ── DRIVE ──
-function openConfig() { document.getElementById('configModal').classList.add('open'); }
-function closeConfig() { document.getElementById('configModal').classList.remove('open'); }
-function saveConfig() {
-  const val = document.getElementById('clientIdInput').value.trim();
-  if(!val) { alert('Pegá tu Client ID antes de guardar.'); return; }
-  localStorage.setItem('nr_client_id', val);
-  closeConfig();
-  showStatus('Client ID guardado. Ahora podés usar "Guardar en Drive".','ok');
-}
-
-function loadGapi() {
-  return new Promise((res,rej) => {
-    if(window.google?.accounts) return res();
-    const s = document.createElement('script');
-    s.src = 'https://accounts.google.com/gsi/client';
-    s.onload = res; s.onerror = () => rej(new Error('No se pudo cargar Google API'));
-    document.head.appendChild(s);
-  });
-}
-
-function getToken(clientId) {
-  return new Promise(res => {
-    const client = google.accounts.oauth2.initTokenClient({
-      client_id: clientId,
-      scope: 'https://www.googleapis.com/auth/drive.file',
-      callback: r => res(r.access_token||null),
-      error_callback: () => res(null)
-    });
-    client.requestAccessToken();
-  });
-}
-
-
-function resetDriveBtn() {
-  document.querySelector('.btn-drive').innerHTML='<i class="fa-solid fa-paper-plane"></i> Enviar';
-}
-
 function showStatus(msg, type) {
   const el = document.getElementById('statusMsg');
   el.textContent=msg; el.className='status '+type;
   setTimeout(()=>{ el.className='status'; },6000);
 }
 
+function resetBtn() {
+  const btn = document.querySelector('.btn-primary');
+  btn.disabled=false;
+  btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Enviar';
+}
+
 async function enviarFormulario() {
-  const clientId = localStorage.getItem('nr_client_id');
-  if(!clientId) { openConfig(); return; }
-  const btn = document.querySelector('.btn-drive');
-  btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+  const tab = getActiveTab();
+  const nameField = { anamnesis:'nombre', mediciones:'med_nombre', frecuencia:'fa_nombre', rutina:'rd_nombre' };
+  const nombre = document.getElementById(nameField[tab])?.value?.trim();
+  if(!nombre) { showStatus('Ingresá el nombre del paciente antes de enviar.','err'); return; }
+
+  const btn = document.querySelector('.btn-primary');
+  btn.disabled=true;
+  btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+
   try {
-    await loadGapi();
-    const token = await getToken(clientId);
-    if(!token) { showStatus('Acceso cancelado.','err'); btn.disabled=false; resetDriveBtn(); return; }
-    btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Subiendo...';
-    const tab = getActiveTab();
     const pdf = renderPDF(tab);
-    const bytes = pdf.output('arraybuffer');
+    const base64 = pdf.output('datauristring').split(',')[1];
     const fileName = getFileName(tab)+'.pdf';
-    const fd = new FormData();
-    fd.append('metadata', new Blob([JSON.stringify({name:fileName, mimeType:'application/pdf'})],{type:'application/json'}));
-    fd.append('file', new Blob([bytes],{type:'application/pdf'}));
-    const resp = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{
-      method:'POST', headers:{'Authorization':'Bearer '+token}, body:fd
+
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ base64, name: fileName })
     });
-    if(resp.ok) {
-      showStatus('✓ Enviado correctamente: '+fileName,'ok');
-      resetForm();
-    } else {
-      const e=await resp.json(); showStatus('Error: '+(e.error?.message||resp.status),'err');
-    }
-  } catch(e) { showStatus('Error: '+e.message,'err'); }
-  btn.disabled=false; resetDriveBtn();
+
+    showStatus('✓ Enviado correctamente: '+fileName,'ok');
+    resetForm();
+  } catch(e) {
+    showStatus('Error al enviar: '+e.message,'err');
+  }
+  resetBtn();
 }
 
 function resetForm() {
-  // Limpiar todos los inputs, selects y textareas del formulario activo
   const tab = getActiveTab();
-  const section = document.getElementById(tab);
+  const section = document.getElementById('tab-'+tab);
   if(!section) return;
   section.querySelectorAll('input:not([type=checkbox]):not([type=range]):not([readonly])').forEach(el => el.value='');
   section.querySelectorAll('textarea').forEach(el => el.value='');
@@ -828,7 +737,6 @@ function resetForm() {
     const val = el.closest('.slider-row')?.querySelector('.slider-val');
     if(val) val.textContent=el.defaultValue;
   });
-  // Limpiar nombre del paciente del badge
   const badge = document.getElementById('patientBadge');
   if(badge) { badge.textContent=''; badge.style.display='none'; }
 }
