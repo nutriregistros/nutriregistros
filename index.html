@@ -281,7 +281,7 @@
       <div class="card-title"><i class="fa-solid fa-weight-scale"></i> Medidas básicas</div>
       <div class="row row-3">
         <div class="field"><label>Peso (kg)</label><input type="number" id="m_peso" step="0.1" min="20" max="300"></div>
-        <div class="field"><label>Altura (cm)</label><input type="number" id="m_altura" step="0.5" min="100" max="220"></div>
+        <div class="field"><label>Altura (cm)</label><input type="number" id="m_talla" step="0.5" min="100" max="220"></div>
         <div class="field"><label>IMC (calculado)</label><input type="text" id="m_imc" readonly placeholder="—"></div>
       </div>
       <div class="row row-3">
@@ -586,7 +586,7 @@ function buildLines(tab) {
     add(`${v('med_nombre')} · ${v('med_num')} · Fecha: ${v('med_fecha')}`,'sub');
     add('───────────────────────────────────────','sep');
     add('MEDIDAS BÁSICAS','section');
-    add(`Peso: ${v('m_peso')} kg · Talla: ${v('m_altura')} cm · IMC: ${v('m_imc')}`);
+    add(`Peso: ${v('m_peso')} kg · Altura: ${v('m_talla')} cm · IMC: ${v('m_imc')}`);
     add(`Cintura: ${v('m_cintura')} cm · Cadera: ${v('m_cadera')} cm · ICC: ${v('m_icc')}`);
     add(`Brazo: ${v('m_brazo')} cm · Muslo: ${v('m_muslo')} cm · Pantorrilla: ${v('m_pantorrilla')} cm`);
     add('───────────────────────────────────────','sep');
