@@ -479,7 +479,10 @@ function init() {
   document.querySelectorAll('input[type=date]').forEach(el => { if(!el.value) el.value = today; });
   const [y,mo] = today.split('-');
   document.querySelectorAll('input[type=month]').forEach(el => { if(!el.value) el.value = `${y}-${mo}`; });
-  ['m_peso','m_talla'].forEach(id => document.getElementById(id)?.addEventListener('input', calcIMC));
+  ['m_peso','m_talla'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', calcIMC);
+  });
   ['m_cintura','m_cadera'].forEach(id => document.getElementById(id)?.addEventListener('input', calcICC));
   document.querySelectorAll('.check-item input').forEach(cb => {
     cb.addEventListener('change', () => cb.closest('.check-item').classList.toggle('checked', cb.checked));
@@ -488,9 +491,12 @@ function init() {
 }
 
 function calcIMC() {
-  const p = parseFloat(document.getElementById('m_peso').value);
-  const t = parseFloat(document.getElementById('m_talla').value) / 100;
-  document.getElementById('m_imc').value = (p && t) ? (p/t/t).toFixed(1) : '';
+  const p = parseFloat(document.getElementById('m_peso')?.value);
+  const t = parseFloat(document.getElementById('m_talla')?.value) / 100;
+  const imcField = document.getElementById('m_imc');
+  if (imcField) {
+    imcField.value = (p && t) ? (p / (t * t)).toFixed(1) : '';
+  }
 }
 function calcICC() {
   const c = parseFloat(document.getElementById('m_cintura').value);
