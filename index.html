@@ -19,7 +19,6 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* HEADER */
   .header { background: var(--white); border-bottom: 1px solid var(--gray-border); padding: 0 24px; height: 58px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
   .logo { width: 34px; height: 34px; background: var(--teal-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
   .logo i { color: var(--teal); font-size: 16px; }
@@ -27,22 +26,18 @@
   .header-sub { font-size: 12px; color: var(--text-ter); margin-top: 1px; }
   .patient-badge { margin-left: auto; font-size: 12px; background: var(--teal-light); color: var(--teal); padding: 4px 12px; border-radius: 20px; font-weight: 500; display: none; }
 
-  /* NAV */
   .nav-wrap { background: var(--white); border-bottom: 1px solid var(--gray-border); padding: 0 24px; overflow-x: auto; display: flex; gap: 2px; }
   .nav-btn { padding: 14px 18px; font-size: 13px; font-weight: 500; color: var(--text-sec); border: none; background: none; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 7px; }
   .nav-btn:hover { color: var(--teal); }
   .nav-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
   .nav-btn i { font-size: 14px; }
 
-  /* MAIN */
   .main { max-width: 760px; margin: 0 auto; padding: 24px 16px 100px; }
 
-  /* CARDS */
   .card { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius); padding: 20px; margin-bottom: 14px; box-shadow: var(--shadow); }
   .card-title { font-size: 13px; font-weight: 600; color: var(--teal); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
   .card-title i { font-size: 14px; }
 
-  /* FIELDS */
   .row { display: grid; gap: 12px; margin-bottom: 12px; }
   .row-2 { grid-template-columns: 1fr 1fr; }
   .row-3 { grid-template-columns: 1fr 1fr 1fr; }
@@ -59,53 +54,37 @@
   .field input[readonly] { background: var(--gray-light); color: var(--text-sec); cursor: default; }
   .section-label { font-size: 11px; font-weight: 700; color: var(--text-ter); text-transform: uppercase; letter-spacing: 0.07em; margin: 18px 0 10px; padding-bottom: 5px; border-bottom: 1px solid var(--gray-border); }
 
-  /* CHECKBOXES */
   .check-grid { display: flex; flex-wrap: wrap; gap: 8px; }
   .check-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text); cursor: pointer; padding: 5px 10px; border: 1px solid var(--gray-border); border-radius: 20px; transition: all 0.15s; user-select: none; }
   .check-item:hover { border-color: var(--teal-mid); background: var(--teal-light); }
   .check-item input[type=checkbox] { width: 13px; height: 13px; accent-color: var(--teal); }
   .check-item.checked { border-color: var(--teal); background: var(--teal-light); color: var(--teal); font-weight: 500; }
 
-  /* SLIDER */
   .slider-row { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
   .slider-label { font-size: 13px; color: var(--text-sec); min-width: 120px; }
   .slider-row input[type=range] { flex: 1; accent-color: var(--teal); }
   .slider-val { font-size: 14px; font-weight: 600; color: var(--teal); min-width: 24px; text-align: right; }
 
-  /* MEAL BLOCKS */
-  .meal-block { background: var(--gray-light); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 10px; border: 1px solid var(--gray-border); }
-  .meal-title { font-size: 12px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .lab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-  /* FREQ TABLE */
-  .freq-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .freq-table th { text-align: left; padding: 8px 10px; color: var(--text-sec); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--gray-border); background: var(--gray-light); }
-  .freq-table td { padding: 6px 10px; border-bottom: 1px solid var(--gray-border); }
-  .freq-table tr:hover td { background: var(--teal-light); }
-  .freq-table select, .freq-table input { font-size: 12px; padding: 4px 7px; border-radius: var(--radius-sm); border: 1px solid var(--gray-border); background: var(--white); color: var(--text); width: 100%; }
-
-  /* BOTTOM BAR */
   .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--gray-border); padding: 12px 24px; display: flex; align-items: center; gap: 10px; box-shadow: 0 -4px 12px rgba(0,0,0,0.07); z-index: 100; }
   .btn { padding: 9px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--gray-border); background: var(--white); color: var(--text); display: flex; align-items: center; gap: 7px; transition: all 0.15s; white-space: nowrap; }
   .btn:hover { background: var(--gray-light); }
   .btn:active { transform: scale(0.97); }
-  .btn-primary { background: var(--teal) !important; border-color: var(--teal) !important; color: var(--white) !important; }
-  .btn-primary:hover { background: var(--teal-dark) !important; border-color: var(--teal-dark) !important; }
+  .btn-primary { background: var(--teal); border-color: var(--teal); color: var(--white); }
+  .btn-primary:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
   .btn i { font-size: 14px; }
   .status { font-size: 12px; padding: 6px 14px; border-radius: var(--radius-sm); display: none; align-items: center; gap: 6px; }
   .status.ok { background: var(--teal-light); color: var(--teal); display: flex; }
   .status.err { background: #FDECEA; color: #B91C1C; display: flex; }
-  .drive-hint { font-size: 11px; color: var(--text-ter); margin-left: auto; max-width: 280px; text-align: right; display: none; }
 
-  /* TABS */
   .tab { display: none; }
   .tab.active { display: block; }
 
-  /* RESPONSIVE */
   @media (max-width: 520px) {
-    .row-2, .row-3 { grid-template-columns: 1fr; }
+    .row-2, .row-3, .lab-grid { grid-template-columns: 1fr; }
     .header-sub { display: none; }
     .bottom-bar { flex-wrap: wrap; }
-    .drive-hint { display: none !important; }
   }
   @media (max-width: 360px) {
     .nav-btn span { display: none; }
@@ -129,12 +108,6 @@
   </button>
   <button class="nav-btn" onclick="showTab('mediciones', this)">
     <i class="fa-solid fa-ruler"></i><span>Mediciones</span>
-  </button>
-  <button class="nav-btn" onclick="showTab('frecuencia', this)">
-    <i class="fa-solid fa-utensils"></i><span>Frecuencia alimentaria</span>
-  </button>
-  <button class="nav-btn" onclick="showTab('rutina', this)">
-    <i class="fa-solid fa-clock"></i><span>Rutina diaria</span>
   </button>
 </div>
 
@@ -170,7 +143,7 @@
     <div class="card">
       <div class="card-title"><i class="fa-solid fa-notes-medical"></i> Antecedentes clínicos</div>
       <div class="section-label">Patologías personales</div>
-      <div class="check-grid" id="patol-grid">
+      <div class="check-grid">
         <label class="check-item"><input type="checkbox" value="Diabetes tipo 2"> Diabetes tipo 2</label>
         <label class="check-item"><input type="checkbox" value="Hipertensión"> Hipertensión</label>
         <label class="check-item"><input type="checkbox" value="Dislipemia"> Dislipemia</label>
@@ -277,158 +250,47 @@
         </div>
       </div>
     </div>
+
     <div class="card">
       <div class="card-title"><i class="fa-solid fa-weight-scale"></i> Medidas básicas</div>
       <div class="row row-3">
         <div class="field"><label>Peso (kg)</label><input type="number" id="m_peso" step="0.1" min="20" max="300"></div>
-        <div class="field"><label>Altura (cm)</label><input type="number" id="m_talla" step="0.5" min="100" max="220"></div>
+        <div class="field"><label>Talla (cm)</label><input type="number" id="m_talla" step="0.5" min="100" max="220"></div>
         <div class="field"><label>IMC (calculado)</label><input type="text" id="m_imc" readonly placeholder="—"></div>
       </div>
-      <div class="row row-3">
-        <div class="field"><label>Cintura (cm)</label><input type="number" id="m_cintura" step="0.5"></div>
-        <div class="field"><label>Cadera (cm)</label><input type="number" id="m_cadera" step="0.5"></div>
-        <div class="field"><label>Índice cintura/cadera</label><input type="text" id="m_icc" readonly placeholder="—"></div>
-      </div>
-      <div class="row row-3">
-        <div class="field"><label>Brazo (cm)</label><input type="number" id="m_brazo" step="0.5"></div>
-        <div class="field"><label>Muslo (cm)</label><input type="number" id="m_muslo" step="0.5"></div>
-        <div class="field"><label>Pantorrilla (cm)</label><input type="number" id="m_pantorrilla" step="0.5"></div>
-      </div>
     </div>
+
     <div class="card">
-      <div class="card-title"><i class="fa-solid fa-chart-pie"></i> Composición corporal <span style="font-weight:400; color:var(--text-ter); font-size:12px">(si disponible)</span></div>
-      <div class="row row-3">
-        <div class="field"><label>% Masa grasa</label><input type="number" id="m_grasa" step="0.1"></div>
-        <div class="field"><label>Masa muscular (kg)</label><input type="number" id="m_muscular" step="0.1"></div>
-        <div class="field"><label>Agua corporal (%)</label><input type="number" id="m_agua" step="0.1"></div>
+      <div class="card-title"><i class="fa-solid fa-flask"></i> Datos de laboratorio</div>
+      <div class="lab-grid">
+        <div class="field"><label>Glucemia (mg/dL)</label><input type="number" id="lab_glucemia" step="0.1" min="0"></div>
+        <div class="field"><label>Colesterol total (mg/dL)</label><input type="number" id="lab_colesterol" step="0.1" min="0"></div>
+        <div class="field"><label>Triglicéridos (mg/dL)</label><input type="number" id="lab_trigliceridos" step="0.1" min="0"></div>
+        <div class="field"><label>HDL (mg/dL)</label><input type="number" id="lab_hdl" step="0.1" min="0"></div>
+        <div class="field"><label>LDL (mg/dL)</label><input type="number" id="lab_ldl" step="0.1" min="0"></div>
+        <div class="field"><label>Tensión arterial (mmHg)</label><input type="text" id="lab_tension" placeholder="Ej: 120/80"></div>
       </div>
-      <div class="row row-3">
-        <div class="field"><label>Masa ósea (kg)</label><input type="number" id="m_osea" step="0.1"></div>
-        <div class="field"><label>Grasa visceral (nivel)</label><input type="number" id="m_visceral" step="1" min="1" max="20"></div>
-        <div class="field"><label>Edad metabólica</label><input type="number" id="m_edad_met"></div>
+      <div class="row row-1" style="margin-top:12px">
+        <div class="field"><label>Otros</label><input type="text" id="lab_otros" placeholder="Otros valores de laboratorio..."></div>
       </div>
     </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-utensils"></i> Alimentación del día</div>
+      <div class="row row-1">
+        <div class="field"><label>¿Cuántas comidas realizó hoy?</label>
+          <select id="med_comidas">
+            <option value="">—</option>
+            <option>1</option><option>2</option><option>3</option>
+            <option>4</option><option>5</option><option>6 o más</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title"><i class="fa-solid fa-pen-to-square"></i> Observaciones clínicas</div>
       <div class="row row-1"><div class="field"><textarea id="m_obs"></textarea></div></div>
-    </div>
-  </div>
-
-  <!-- ══ TAB: FRECUENCIA ══ -->
-  <div class="tab" id="tab-frecuencia">
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-user"></i> Identificación</div>
-      <div class="row row-2">
-        <div class="field"><label>Nombre y apellido *</label><input type="text" id="fa_nombre" placeholder="García, Laura" oninput="updateBadge()"></div>
-        <div class="field"><label>Período evaluado</label><input type="month" id="fa_mes"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-utensils"></i> Frecuencia por grupos alimentarios</div>
-      <p style="font-size:12px; color:var(--text-sec); margin-bottom:14px">Indicar con qué frecuencia consume cada grupo en el período habitual.</p>
-      <div style="overflow-x:auto">
-        <table class="freq-table">
-          <thead><tr><th>Grupo alimentario</th><th style="min-width:160px">Frecuencia</th><th style="min-width:120px">Porción típica</th></tr></thead>
-          <tbody id="freq-body"></tbody>
-        </table>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-droplet"></i> Hidratación y bebidas</div>
-      <div class="row row-3">
-        <div class="field"><label>Agua (vasos/día)</label><input type="number" id="fa_agua" min="0" max="20"></div>
-        <div class="field"><label>Infusiones (tazas/día)</label><input type="number" id="fa_infusiones" min="0" max="15"></div>
-        <div class="field"><label>Jugos / gaseosas</label>
-          <select id="fa_jugos"><option value="">—</option><option>Nunca</option><option>1–3/mes</option><option>1–2/sem</option><option>Diario</option></select>
-        </div>
-      </div>
-      <div class="row row-2">
-        <div class="field"><label>Alcohol</label>
-          <select id="fa_alcohol"><option value="">—</option><option>No consume</option><option>Ocasional (fiestas)</option><option>1–2 veces/semana</option><option>Diario</option></select>
-        </div>
-        <div class="field"><label>Bebidas energéticas</label>
-          <select id="fa_energeticas"><option value="">—</option><option>Nunca</option><option>Ocasional</option><option>Frecuente</option></select>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-pen-to-square"></i> Observaciones</div>
-      <div class="row row-1"><div class="field"><textarea id="fa_obs" placeholder="Preferencias, aversiones, contexto socioeconómico, hábitos culturales..."></textarea></div></div>
-    </div>
-  </div>
-
-  <!-- ══ TAB: RUTINA ══ -->
-  <div class="tab" id="tab-rutina">
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-user"></i> Identificación</div>
-      <div class="row row-2">
-        <div class="field"><label>Nombre y apellido *</label><input type="text" id="rd_nombre" placeholder="García, Laura" oninput="updateBadge()"></div>
-        <div class="field"><label>Fecha</label><input type="date" id="rd_fecha"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-sun"></i> Inicio del día</div>
-      <div class="row row-3">
-        <div class="field"><label>Hora de despertar</label><input type="time" id="rd_despertar"></div>
-        <div class="field"><label>Hora de salida de casa</label><input type="time" id="rd_salida"></div>
-        <div class="field"><label>¿Desayuna antes de salir?</label>
-          <select id="rd_desayuno_casa"><option value="">—</option><option>Sí, siempre</option><option>A veces</option><option>Rara vez</option><option>No</option></select>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-building"></i> Contexto laboral / académico</div>
-      <div class="row row-2">
-        <div class="field"><label>Actividad principal</label>
-          <select id="rd_actividad"><option value="">—</option><option>Trabajo presencial</option><option>Trabajo remoto / home office</option><option>Estudio presencial</option><option>Estudio + trabajo</option><option>Hogar / cuidado familiar</option><option>Otro</option></select>
-        </div>
-        <div class="field"><label>Horario aproximado</label><input type="text" id="rd_horario" placeholder="Ej: 9 a 18 hs"></div>
-      </div>
-      <div class="row row-2">
-        <div class="field"><label>Flexibilidad para comer</label>
-          <select id="rd_flexibilidad"><option value="">—</option><option>Sí, total</option><option>Parcial</option><option>Muy poca</option><option>No</option></select>
-        </div>
-        <div class="field"><label>¿Dónde almuerza?</label>
-          <select id="rd_almuerzo_lugar"><option value="">—</option><option>En casa</option><option>Vianda propia</option><option>Comedor trabajo</option><option>Restaurante / rotisería</option><option>No almuerza</option></select>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-apple-whole"></i> Recordatorio alimentario — últimas 24 hs</div>
-      <p style="font-size:12px; color:var(--text-sec); margin-bottom:14px">Describir qué comió ayer en cada momento. Incluir cantidades aproximadas, método de cocción y lugar.</p>
-      <div id="meals-container"></div>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-moon"></i> Rutina nocturna</div>
-      <div class="row row-3">
-        <div class="field"><label>Hora de cena</label><input type="time" id="rd_cena_hora"></div>
-        <div class="field"><label>¿Come después de cenar?</label>
-          <select id="rd_post_cena"><option value="">—</option><option>No</option><option>A veces / algo dulce</option><option>Sí, regularmente</option></select>
-        </div>
-        <div class="field"><label>Hora de dormir</label><input type="time" id="rd_dormir"></div>
-      </div>
-      <div class="row row-1" style="margin-top:8px">
-        <div class="field"><label>¿Fue este un día típico? Aclarar diferencias.</label><textarea id="rd_dia_tipico"></textarea></div>
-      </div>
-      <div style="margin-top:12px">
-        <div class="slider-row">
-          <span class="slider-label">Hambre / ansiedad (1–10)</span>
-          <input type="range" min="1" max="10" value="5" id="rd_hambre" oninput="document.getElementById('sv3').textContent=this.value">
-          <span class="slider-val" id="sv3">5</span>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-house-user"></i> Contexto familiar</div>
-      <div class="row row-2">
-        <div class="field"><label>¿Quién prepara la comida?</label>
-          <select id="rd_cocina"><option value="">—</option><option>El mismo paciente</option><option>Pareja / familiar</option><option>Compartido</option><option>Servicio / delivery</option></select>
-        </div>
-        <div class="field"><label>Convivientes</label><input type="text" id="rd_convivientes" placeholder="Ej: pareja e hijos"></div>
-      </div>
-      <div class="row row-1" style="margin-top:8px">
-        <div class="field"><label>Observaciones adicionales sobre la rutina</label><textarea id="rd_obs"></textarea></div>
-      </div>
     </div>
   </div>
 
@@ -436,72 +298,29 @@
 
 <!-- BOTTOM BAR -->
 <div class="bottom-bar">
-  <button class="btn btn-primary" onclick="enviarFormulario()"><i class="fa-solid fa-paper-plane"></i> Enviar</button>
+  <button class="btn btn-primary" id="btnEnviar" onclick="enviarTodo()">
+    <i class="fa-solid fa-paper-plane"></i> Enviar
+  </button>
   <div class="status" id="statusMsg"></div>
-  <div class="drive-hint" id="driveHint">Archivo: <strong id="fileNamePreview"></strong></div>
 </div>
 
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwndIJLCuR92A_TNVTUcA45TvRHV7BIE9kk0tmGh5p-GO_aaJWFt6IoIttKSNT9tDru7Q/exec';
 
-const MEALS = ['Desayuno','Media mañana','Almuerzo','Merienda','Cena','Post-cena'];
-const FREQ_OPTIONS = ['Nunca','1–3 veces/mes','1–2 veces/sem','3–4 veces/sem','5–6 veces/sem','1 vez/día','2+ veces/día'];
-const FOOD_GROUPS = [
-  'Frutas frescas','Verduras y hortalizas','Frutas secas / semillas',
-  'Pan / cereales integrales','Pan / cereales refinados','Arroz / pasta',
-  'Papa / batata / tubérculos','Legumbres','Pollo / pavo',
-  'Carne vacuna','Cerdo','Pescado / mariscos',
-  'Huevo','Lácteos enteros (leche, yogur)','Quesos',
-  'Lácteos descremados','Alternativas vegetales (soja, avena, almendra)',
-  'Grasas saludables (palta, aceite de oliva, nueces)',
-  'Frituras / grasas trans','Alimentos ultraprocesados',
-  'Golosinas / dulces','Snacks salados','Comida rápida / delivery',
-];
-
 function init() {
-  const fb = document.getElementById('freq-body');
-  FOOD_GROUPS.forEach(name => {
-    const tr = document.createElement('tr');
-    const opts = FREQ_OPTIONS.map(o => `<option>${o}</option>`).join('');
-    tr.innerHTML = `<td>${name}</td><td><select>${opts}</select></td><td><input type="text" placeholder="Ej: 1 plato"></td>`;
-    fb.appendChild(tr);
-  });
-  const mc = document.getElementById('meals-container');
-  MEALS.forEach(m => {
-    const id = m.replace(/\s/g,'_').toLowerCase();
-    mc.innerHTML += `<div class="meal-block"><div class="meal-title">${m}</div>
-      <div class="row row-2">
-        <div class="field"><label>¿Qué comió?</label><textarea id="meal_${id}" style="min-height:60px" placeholder="Alimentos, cantidades, preparación..."></textarea></div>
-        <div class="field"><label>Hora · lugar · acompañante</label><input type="text" id="meal_${id}_ctx" placeholder="Ej: 8:30 hs, en casa, solo"></div>
-      </div></div>`;
-  });
   const today = new Date().toISOString().split('T')[0];
   document.querySelectorAll('input[type=date]').forEach(el => { if(!el.value) el.value = today; });
-  const [y,mo] = today.split('-');
-  document.querySelectorAll('input[type=month]').forEach(el => { if(!el.value) el.value = `${y}-${mo}`; });
-  ['m_peso','m_talla'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.addEventListener('input', calcIMC);
-  });
-  ['m_cintura','m_cadera'].forEach(id => document.getElementById(id)?.addEventListener('input', calcICC));
+  document.getElementById('m_peso')?.addEventListener('input', calcIMC);
+  document.getElementById('m_talla')?.addEventListener('input', calcIMC);
   document.querySelectorAll('.check-item input').forEach(cb => {
     cb.addEventListener('change', () => cb.closest('.check-item').classList.toggle('checked', cb.checked));
   });
-  updateFileName();
 }
 
 function calcIMC() {
-  const p = parseFloat(document.getElementById('m_peso')?.value);
-  const t = parseFloat(document.getElementById('m_talla')?.value) / 100;
-  const imcField = document.getElementById('m_imc');
-  if (imcField) {
-    imcField.value = (p && t) ? (p / (t * t)).toFixed(1) : '';
-  }
-}
-function calcICC() {
-  const c = parseFloat(document.getElementById('m_cintura').value);
-  const ca = parseFloat(document.getElementById('m_cadera').value);
-  document.getElementById('m_icc').value = (c && ca) ? (c/ca).toFixed(2) : '';
+  const p = parseFloat(document.getElementById('m_peso').value);
+  const t = parseFloat(document.getElementById('m_talla').value) / 100;
+  document.getElementById('m_imc').value = (p && t) ? (p/t/t).toFixed(1) : '';
 }
 
 function showTab(id, btn) {
@@ -509,155 +328,98 @@ function showTab(id, btn) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
-  updateFileName();
-}
-
-function getActiveTab() {
-  const a = document.querySelector('.tab.active');
-  return a ? a.id.replace('tab-','') : 'anamnesis';
 }
 
 function updateBadge() {
-  const ids = ['nombre','med_nombre','fa_nombre','rd_nombre'];
-  const name = ids.map(id => document.getElementById(id)?.value).find(v => v);
+  const name = document.getElementById('nombre')?.value || document.getElementById('med_nombre')?.value;
   const badge = document.getElementById('patientBadge');
   if(name) { badge.textContent = name; badge.style.display='block'; }
   else badge.style.display='none';
-  updateFileName();
-}
-
-function getFileName(tab) {
-  const nameField = { anamnesis:'nombre', mediciones:'med_nombre', frecuencia:'fa_nombre', rutina:'rd_nombre' };
-  const dateField = { anamnesis:'fecha_nac', mediciones:'med_fecha', frecuencia:'fa_mes', rutina:'rd_fecha' };
-  const label = { anamnesis:'Anamnesis', mediciones:'Mediciones', frecuencia:'Frecuencia Alimentaria', rutina:'Rutina Diaria' };
-  const name = document.getElementById(nameField[tab])?.value || 'Paciente';
-  let fecha = document.getElementById(dateField[tab])?.value || new Date().toISOString().split('T')[0];
-  if(tab === 'anamnesis') fecha = new Date().toISOString().split('T')[0];
-  return `${name} — ${label[tab]} — ${fecha}`;
-}
-
-function updateFileName() {
-  const tab = getActiveTab();
-  const fn = getFileName(tab) + '.pdf';
-  document.getElementById('fileNamePreview').textContent = fn;
-  document.getElementById('driveHint').style.display = 'block';
 }
 
 function v(id) { return document.getElementById(id)?.value || '—'; }
 
-function buildLines(tab) {
+function getNombreAnamnesis() { return document.getElementById('nombre')?.value?.trim() || ''; }
+function getNombreMediciones() { return document.getElementById('med_nombre')?.value?.trim() || ''; }
+
+// ── PDF ANAMNESIS ──
+function buildPDFAnamnesis() {
+  const checks = selector => [...document.querySelectorAll(selector+':checked')].map(c=>c.value).join(', ') || 'Ninguno/a';
   const lines = [];
   const add = (t, s='body') => lines.push({t, s});
-  const checks = selector => [...document.querySelectorAll(selector+':checked')].map(c=>c.value).join(', ') || 'Ninguno/a';
 
-  if(tab === 'anamnesis') {
-    add('ANAMNESIS NUTRICIONAL INICIAL','title');
-    add(`Generado: ${new Date().toLocaleDateString('es-AR')} · Paciente: ${v('nombre')}`,'sub');
-    add('───────────────────────────────────────','sep');
-    add('DATOS PERSONALES','section');
-    add(`Nombre y apellido: ${v('nombre')}`);
-    add(`Fecha de nacimiento: ${v('fecha_nac')} · Sexo biológico: ${v('sexo')}`);
-    add(`Ocupación: ${v('ocupacion')} · Contacto: ${v('contacto')}`);
-    add('───────────────────────────────────────','sep');
-    add('MOTIVO DE CONSULTA','section');
-    add(`Motivo principal: ${v('motivo')}`);
-    add(`Objetivos: ${v('objetivos')}`);
-    add('───────────────────────────────────────','sep');
-    add('ANTECEDENTES CLÍNICOS','section');
-    add(`Patologías: ${checks('.check-item input[type=checkbox]')}${v('patol_otras')!=='—'?' / '+v('patol_otras'):''}`);
-    add(`Antecedentes familiares: ${v('ant_familiar')}`);
-    add(`Medicamentos / suplementos: ${v('medicamentos')}`);
-    add('───────────────────────────────────────','sep');
-    add('ALERGIAS E INTOLERANCIAS','section');
-    const alergs = [...document.querySelectorAll('#tab-anamnesis .card:nth-child(4) input[type=checkbox]:checked')].map(c=>c.value).join(', ') || 'Ninguna';
-    add(`${alergs}${v('alerg_otras')!=='—'?' / '+v('alerg_otras'):''}`);
-    const sints = [...document.querySelectorAll('#tab-anamnesis .card:nth-child(4) .check-grid:last-of-type input[type=checkbox]:checked')].map(c=>c.value).join(', ') || 'Ninguno';
-    add(`Síntomas digestivos: ${sints}`);
-    add('───────────────────────────────────────','sep');
-    add('HISTORIA DE PESO','section');
-    add(`Peso actual: ${v('peso_actual')} kg · Peso habitual: ${v('peso_habitual')} kg · Peso ideal percibido: ${v('peso_ideal')} kg`);
-    add(`Cambios recientes (6 meses): ${v('cambios_peso')}`);
-    add('───────────────────────────────────────','sep');
-    add('SUEÑO Y ESTRÉS','section');
-    add(`Calidad del sueño (1-10): ${document.getElementById('sueño_cal')?.value||'—'} · Horas/noche: ${v('horas_sueño')}`);
-    add(`Nivel de estrés (1-10): ${document.getElementById('estres_cal')?.value||'—'} · Fuentes: ${v('fuentes_estres')}`);
-    add('───────────────────────────────────────','sep');
-    add('ACTIVIDAD FÍSICA','section');
-    add(`Tipo: ${v('act_tipo')} · Frecuencia: ${v('act_freq')} · Duración: ${v('act_dur')} min/sesión`);
-    add('───────────────────────────────────────','sep');
-    add('OBSERVACIONES','section');
-    add(v('obs_anamnesis'));
-  } else if(tab === 'mediciones') {
-    add('MEDICIONES CORPORALES','title');
-    add(`${v('med_nombre')} · ${v('med_num')} · Fecha: ${v('med_fecha')}`,'sub');
-    add('───────────────────────────────────────','sep');
-    add('MEDIDAS BÁSICAS','section');
-    add(`Peso: ${v('m_peso')} kg · Altura: ${v('m_talla')} cm · IMC: ${v('m_imc')}`);
-    add(`Cintura: ${v('m_cintura')} cm · Cadera: ${v('m_cadera')} cm · ICC: ${v('m_icc')}`);
-    add(`Brazo: ${v('m_brazo')} cm · Muslo: ${v('m_muslo')} cm · Pantorrilla: ${v('m_pantorrilla')} cm`);
-    add('───────────────────────────────────────','sep');
-    add('COMPOSICIÓN CORPORAL','section');
-    add(`% Masa grasa: ${v('m_grasa')}% · Masa muscular: ${v('m_muscular')} kg · Agua: ${v('m_agua')}%`);
-    add(`Masa ósea: ${v('m_osea')} kg · Grasa visceral: nivel ${v('m_visceral')} · Edad metabólica: ${v('m_edad_met')}`);
-    add('───────────────────────────────────────','sep');
-    add('OBSERVACIONES CLÍNICAS','section');
-    add(v('m_obs'));
-  } else if(tab === 'frecuencia') {
-    add('CUESTIONARIO DE FRECUENCIA ALIMENTARIA','title');
-    add(`${v('fa_nombre')} · Período: ${v('fa_mes')}`,'sub');
-    add('───────────────────────────────────────','sep');
-    add('GRUPOS ALIMENTARIOS','section');
-    document.querySelectorAll('#freq-body tr').forEach(tr => {
-      const cells = tr.querySelectorAll('td');
-      const g = cells[0]?.textContent||'';
-      const f = cells[1]?.querySelector('select')?.value||'—';
-      const p = cells[2]?.querySelector('input')?.value||'—';
-      add(`${g}: ${f} · Porción: ${p}`);
-    });
-    add('───────────────────────────────────────','sep');
-    add('HIDRATACIÓN Y BEBIDAS','section');
-    add(`Agua: ${v('fa_agua')} vasos/día · Infusiones: ${v('fa_infusiones')} tazas/día`);
-    add(`Jugos/gaseosas: ${v('fa_jugos')} · Alcohol: ${v('fa_alcohol')} · Energéticas: ${v('fa_energeticas')}`);
-    add('───────────────────────────────────────','sep');
-    add('OBSERVACIONES','section');
-    add(v('fa_obs'));
-  } else {
-    add('RUTINA DIARIA Y RECORDATORIO 24 HORAS','title');
-    add(`${v('rd_nombre')} · Fecha: ${v('rd_fecha')}`,'sub');
-    add('───────────────────────────────────────','sep');
-    add('INICIO DEL DÍA','section');
-    add(`Despertar: ${v('rd_despertar')} · Salida: ${v('rd_salida')} · Desayuna antes de salir: ${v('rd_desayuno_casa')}`);
-    add('───────────────────────────────────────','sep');
-    add('CONTEXTO LABORAL / ACADÉMICO','section');
-    add(`Actividad: ${v('rd_actividad')} · Horario: ${v('rd_horario')}`);
-    add(`Flexibilidad horaria: ${v('rd_flexibilidad')} · Almuerza en: ${v('rd_almuerzo_lugar')}`);
-    add('───────────────────────────────────────','sep');
-    add('RECORDATORIO ALIMENTARIO — 24 HORAS','section');
-    MEALS.forEach(m => {
-      const id = m.replace(/\s/g,'_').toLowerCase();
-      const alim = document.getElementById(`meal_${id}`)?.value||'—';
-      const ctx = document.getElementById(`meal_${id}_ctx`)?.value||'—';
-      add(`${m.toUpperCase()}: ${alim} [${ctx}]`);
-    });
-    add('───────────────────────────────────────','sep');
-    add('RUTINA NOCTURNA','section');
-    add(`Cena: ${v('rd_cena_hora')} · Post-cena: ${v('rd_post_cena')} · Dormir: ${v('rd_dormir')}`);
-    add(`¿Día típico?: ${v('rd_dia_tipico')}`);
-    add(`Hambre/ansiedad (1-10): ${document.getElementById('rd_hambre')?.value||'—'}`);
-    add('───────────────────────────────────────','sep');
-    add('CONTEXTO FAMILIAR','section');
-    add(`Cocina: ${v('rd_cocina')} · Convivientes: ${v('rd_convivientes')}`);
-    add('───────────────────────────────────────','sep');
-    add('OBSERVACIONES','section');
-    add(v('rd_obs'));
-  }
-  return lines;
+  add('ANAMNESIS NUTRICIONAL INICIAL','title');
+  add(`Generado: ${new Date().toLocaleDateString('es-AR')} · Paciente: ${v('nombre')}`,'sub');
+  add('───────────────────────────────────────','sep');
+  add('DATOS PERSONALES','section');
+  add(`Nombre y apellido: ${v('nombre')}`);
+  add(`Fecha de nacimiento: ${v('fecha_nac')} · Sexo biológico: ${v('sexo')}`);
+  add(`Ocupación: ${v('ocupacion')} · Contacto: ${v('contacto')}`);
+  add('───────────────────────────────────────','sep');
+  add('MOTIVO DE CONSULTA','section');
+  add(`Motivo principal: ${v('motivo')}`);
+  add(`Objetivos: ${v('objetivos')}`);
+  add('───────────────────────────────────────','sep');
+  add('ANTECEDENTES CLÍNICOS','section');
+  add(`Patologías: ${checks('#tab-anamnesis .card:nth-child(3) .check-grid:first-of-type input')}${v('patol_otras')!=='—'?' / '+v('patol_otras'):''}`);
+  add(`Antecedentes familiares: ${v('ant_familiar')}`);
+  add(`Medicamentos / suplementos: ${v('medicamentos')}`);
+  add('───────────────────────────────────────','sep');
+  add('ALERGIAS E INTOLERANCIAS','section');
+  const alergs = [...document.querySelectorAll('#tab-anamnesis .card:nth-child(4) .check-grid:first-of-type input:checked')].map(c=>c.value).join(', ') || 'Ninguna';
+  add(`${alergs}${v('alerg_otras')!=='—'?' / '+v('alerg_otras'):''}`);
+  const sints = [...document.querySelectorAll('#tab-anamnesis .card:nth-child(4) .check-grid:last-of-type input:checked')].map(c=>c.value).join(', ') || 'Ninguno';
+  add(`Síntomas digestivos: ${sints}`);
+  add('───────────────────────────────────────','sep');
+  add('HISTORIA DE PESO','section');
+  add(`Peso actual: ${v('peso_actual')} kg · Peso habitual: ${v('peso_habitual')} kg · Peso ideal percibido: ${v('peso_ideal')} kg`);
+  add(`Cambios recientes (6 meses): ${v('cambios_peso')}`);
+  add('───────────────────────────────────────','sep');
+  add('SUEÑO Y ESTRÉS','section');
+  add(`Calidad del sueño (1-10): ${document.getElementById('sueño_cal')?.value||'—'} · Horas/noche: ${v('horas_sueño')}`);
+  add(`Nivel de estrés (1-10): ${document.getElementById('estres_cal')?.value||'—'} · Fuentes: ${v('fuentes_estres')}`);
+  add('───────────────────────────────────────','sep');
+  add('ACTIVIDAD FÍSICA','section');
+  add(`Tipo: ${v('act_tipo')} · Frecuencia: ${v('act_freq')} · Duración: ${v('act_dur')} min/sesión`);
+  add('───────────────────────────────────────','sep');
+  add('OBSERVACIONES','section');
+  add(v('obs_anamnesis'));
+
+  return renderDoc(lines);
 }
 
-function renderPDF(tab) {
+// ── PDF MEDICIONES ──
+function buildPDFMediciones() {
+  const lines = [];
+  const add = (t, s='body') => lines.push({t, s});
+
+  add('MEDICIONES Y LABORATORIO','title');
+  add(`${v('med_nombre')} · ${v('med_num')} · Fecha: ${v('med_fecha')}`,'sub');
+  add('───────────────────────────────────────','sep');
+  add('MEDIDAS BÁSICAS','section');
+  add(`Peso: ${v('m_peso')} kg · Talla: ${v('m_talla')} cm · IMC: ${v('m_imc')}`);
+  add('───────────────────────────────────────','sep');
+  add('DATOS DE LABORATORIO','section');
+  add(`Glucemia: ${v('lab_glucemia')} mg/dL`);
+  add(`Colesterol total: ${v('lab_colesterol')} mg/dL`);
+  add(`Triglicéridos: ${v('lab_trigliceridos')} mg/dL`);
+  add(`HDL: ${v('lab_hdl')} mg/dL · LDL: ${v('lab_ldl')} mg/dL`);
+  add(`Tensión arterial: ${v('lab_tension')} mmHg`);
+  add(`Otros: ${v('lab_otros')}`);
+  add('───────────────────────────────────────','sep');
+  add('ALIMENTACIÓN DEL DÍA','section');
+  add(`Comidas realizadas: ${v('med_comidas')}`);
+  add('───────────────────────────────────────','sep');
+  add('OBSERVACIONES CLÍNICAS','section');
+  add(v('m_obs'));
+
+  return renderDoc(lines);
+}
+
+// ── RENDER PDF ──
+function renderDoc(lines) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit:'mm', format:'a4' });
-  const lines = buildLines(tab);
   const ml = 20, mw = 170;
   let y = 20;
   const nl = (n=6) => { y+=n; if(y>275){doc.addPage(); y=20;} };
@@ -685,63 +447,93 @@ function renderPDF(tab) {
   return doc;
 }
 
+// ── ENVÍO MÚLTIPLE ──
 function showStatus(msg, type) {
   const el = document.getElementById('statusMsg');
-  el.textContent=msg; el.className='status '+type;
-  setTimeout(()=>{ el.className='status'; },6000);
+  el.textContent = msg; el.className = 'status ' + type;
+  setTimeout(() => { el.className = 'status'; }, 7000);
 }
 
-function resetBtn() {
-  const btn = document.querySelector('.btn-primary');
-  btn.disabled=false;
-  btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Enviar';
+async function subirPDF(doc, fileName) {
+  const base64 = doc.output('datauristring').split(',')[1];
+  await fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ base64, name: fileName })
+  });
 }
 
-async function enviarFormulario() {
-  const tab = getActiveTab();
-  const nameField = { anamnesis:'nombre', mediciones:'med_nombre', frecuencia:'fa_nombre', rutina:'rd_nombre' };
-  const nombre = document.getElementById(nameField[tab])?.value?.trim();
-  if(!nombre) { showStatus('Ingresá el nombre del paciente antes de enviar.','err'); return; }
+function getFileName(nombre, tipo) {
+  const fecha = new Date().toISOString().split('T')[0];
+  return `${nombre} — ${tipo} — ${fecha}.pdf`;
+}
 
-  const btn = document.querySelector('.btn-primary');
-  btn.disabled=true;
-  btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+async function enviarTodo() {
+  const nombreA = getNombreAnamnesis();
+  const nombreM = getNombreMediciones();
+
+  if(!nombreA && !nombreM) {
+    showStatus('Ingresá el nombre del paciente en al menos un formulario.', 'err');
+    return;
+  }
+
+  const btn = document.getElementById('btnEnviar');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
+
+  const enviados = [];
+  const errores = [];
 
   try {
-    const pdf = renderPDF(tab);
-    const base64 = pdf.output('datauristring').split(',')[1];
-    const fileName = getFileName(tab)+'.pdf';
+    if(nombreA) {
+      try {
+        const pdf = buildPDFAnamnesis();
+        await subirPDF(pdf, getFileName(nombreA, 'Anamnesis'));
+        enviados.push('Anamnesis');
+      } catch(e) { errores.push('Anamnesis'); }
+    }
 
-    await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ base64, name: fileName })
-    });
+    if(nombreM) {
+      try {
+        const pdf = buildPDFMediciones();
+        await subirPDF(pdf, getFileName(nombreM, 'Mediciones'));
+        enviados.push('Mediciones');
+      } catch(e) { errores.push('Mediciones'); }
+    }
 
-    showStatus('✓ Enviado correctamente: '+fileName,'ok');
-    resetForm();
+    if(enviados.length > 0 && errores.length === 0) {
+      showStatus(`✓ Enviado correctamente: ${enviados.join(', ')}`, 'ok');
+      resetForms();
+    } else if(enviados.length > 0) {
+      showStatus(`✓ ${enviados.join(', ')} enviados. Error en: ${errores.join(', ')}`, 'err');
+    } else {
+      showStatus('Error al enviar. Intentá de nuevo.', 'err');
+    }
   } catch(e) {
-    showStatus('Error al enviar: '+e.message,'err');
+    showStatus('Error al enviar: ' + e.message, 'err');
   }
-  resetBtn();
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar';
 }
 
-function resetForm() {
-  const tab = getActiveTab();
-  const section = document.getElementById('tab-'+tab);
-  if(!section) return;
-  section.querySelectorAll('input:not([type=checkbox]):not([type=range]):not([readonly])').forEach(el => el.value='');
-  section.querySelectorAll('textarea').forEach(el => el.value='');
-  section.querySelectorAll('select').forEach(el => el.selectedIndex=0);
-  section.querySelectorAll('input[type=checkbox]').forEach(el => {
-    el.checked=false;
-    el.closest('.check-item')?.classList.remove('checked');
-  });
-  section.querySelectorAll('input[type=range]').forEach(el => {
-    el.value=el.defaultValue;
-    const val = el.closest('.slider-row')?.querySelector('.slider-val');
-    if(val) val.textContent=el.defaultValue;
+function resetForms() {
+  ['tab-anamnesis','tab-mediciones'].forEach(tabId => {
+    const section = document.getElementById(tabId);
+    if(!section) return;
+    section.querySelectorAll('input:not([type=checkbox]):not([type=range]):not([readonly])').forEach(el => el.value='');
+    section.querySelectorAll('textarea').forEach(el => el.value='');
+    section.querySelectorAll('select').forEach(el => el.selectedIndex=0);
+    section.querySelectorAll('input[type=checkbox]').forEach(el => {
+      el.checked=false;
+      el.closest('.check-item')?.classList.remove('checked');
+    });
+    section.querySelectorAll('input[type=range]').forEach(el => {
+      el.value=el.defaultValue;
+      const val = el.closest('.slider-row')?.querySelector('.slider-val');
+      if(val) val.textContent=el.defaultValue;
+    });
   });
   const badge = document.getElementById('patientBadge');
   if(badge) { badge.textContent=''; badge.style.display='none'; }
