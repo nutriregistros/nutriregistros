@@ -3,543 +3,922 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NutriRegistros</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<title>NutriRegistros Pro - Sistema Clínico V5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600;700&display=swap"rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-  :root {
-    --teal: #0F6E56; --teal-dark: #085041; --teal-light: #E1F5EE; --teal-mid: #9FE1CB;
-    --gray: #5F5E5A; --gray-light: #F1EFE8; --gray-border: #D3D1C7;
-    --text: #2C2C2A; --text-sec: #6B6B68; --text-ter: #9B9B98;
-    --white: #FFFFFF; --bg: #F7F6F2;
-    --radius: 10px; --radius-sm: 6px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
-  .header { background: var(--white); border-bottom: 1px solid var(--gray-border); padding: 0 24px; height: 58px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
-  .logo { width: 34px; height: 34px; background: var(--teal-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
-  .logo i { color: var(--teal); font-size: 16px; }
-  .header-title { font-size: 17px; font-weight: 600; color: var(--teal); }
-  .header-sub { font-size: 12px; color: var(--text-ter); margin-top: 1px; }
-  .patient-badge { margin-left: auto; font-size: 12px; background: var(--teal-light); color: var(--teal); padding: 4px 12px; border-radius: 20px; font-weight: 500; display: none; }
-
-  .nav-wrap { background: var(--white); border-bottom: 1px solid var(--gray-border); padding: 0 24px; overflow-x: auto; display: flex; gap: 2px; }
-  .nav-btn { padding: 14px 18px; font-size: 13px; font-weight: 500; color: var(--text-sec); border: none; background: none; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 7px; }
-  .nav-btn:hover { color: var(--teal); }
-  .nav-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
-  .nav-btn i { font-size: 14px; }
-
-  .main { max-width: 760px; margin: 0 auto; padding: 24px 16px 100px; }
-
-  .card { background: var(--white); border: 1px solid var(--gray-border); border-radius: var(--radius); padding: 20px; margin-bottom: 14px; box-shadow: var(--shadow); }
-  .card-title { font-size: 13px; font-weight: 600; color: var(--teal); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .card-title i { font-size: 14px; }
-
-  .row { display: grid; gap: 12px; margin-bottom: 12px; }
-  .row-2 { grid-template-columns: 1fr 1fr; }
-  .row-3 { grid-template-columns: 1fr 1fr 1fr; }
-  .row-1 { grid-template-columns: 1fr; }
-  .field { display: flex; flex-direction: column; gap: 5px; }
-  .field label { font-size: 11.5px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; letter-spacing: 0.04em; }
-  .field input, .field select, .field textarea {
-    border: 1px solid var(--gray-border); border-radius: var(--radius-sm);
-    padding: 8px 11px; font-size: 14px; font-family: inherit;
-    color: var(--text); background: var(--white); width: 100%; transition: border 0.15s;
-  }
-  .field textarea { resize: vertical; min-height: 72px; }
-  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--teal-mid); box-shadow: 0 0 0 3px rgba(15,110,86,0.08); }
-  .field input[readonly] { background: var(--gray-light); color: var(--text-sec); cursor: default; }
-  .section-label { font-size: 11px; font-weight: 700; color: var(--text-ter); text-transform: uppercase; letter-spacing: 0.07em; margin: 18px 0 10px; padding-bottom: 5px; border-bottom: 1px solid var(--gray-border); }
-
-  .check-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-  .check-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text); cursor: pointer; padding: 5px 10px; border: 1px solid var(--gray-border); border-radius: 20px; transition: all 0.15s; user-select: none; }
-  .check-item:hover { border-color: var(--teal-mid); background: var(--teal-light); }
-  .check-item input[type=checkbox] { width: 13px; height: 13px; accent-color: var(--teal); }
-  .check-item.checked { border-color: var(--teal); background: var(--teal-light); color: var(--teal); font-weight: 500; }
-
-  .slider-row { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
-  .slider-label { font-size: 13px; color: var(--text-sec); min-width: 120px; }
-  .slider-row input[type=range] { flex: 1; accent-color: var(--teal); }
-  .slider-val { font-size: 14px; font-weight: 600; color: var(--teal); min-width: 24px; text-align: right; }
-
-  .lab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-  .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--gray-border); padding: 12px 24px; display: flex; align-items: center; gap: 10px; box-shadow: 0 -4px 12px rgba(0,0,0,0.07); z-index: 100; }
-  .btn { padding: 9px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--gray-border); background: var(--white); color: var(--text); display: flex; align-items: center; gap: 7px; transition: all 0.15s; white-space: nowrap; }
-  .btn:hover { background: var(--gray-light); }
-  .btn:active { transform: scale(0.97); }
-  .btn-primary { background: var(--teal); border-color: var(--teal); color: var(--white); }
-  .btn-primary:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
-  .btn i { font-size: 14px; }
-  .status { font-size: 12px; padding: 6px 14px; border-radius: var(--radius-sm); display: none; align-items: center; gap: 6px; }
-  .status.ok { background: var(--teal-light); color: var(--teal); display: flex; }
-  .status.err { background: #FDECEA; color: #B91C1C; display: flex; }
-
-  .tab { display: none; }
-  .tab.active { display: block; }
-
-  @media (max-width: 520px) {
-    .row-2, .row-3, .lab-grid { grid-template-columns: 1fr; }
-    .header-sub { display: none; }
-    .bottom-bar { flex-wrap: wrap; }
-  }
-  @media (max-width: 360px) {
-    .nav-btn span { display: none; }
-  }
+ :root{
+ --bg: #F6F1E7;
+ --panel: #FFFFFF;
+ --ink: #23281F;
+ --ink-soft: #5B5E52;
+ --green: #35472F;
+ --green-deep: #1F2A1A;
+ --ochre: #C97D3C;
+ --ochre-soft: #EFD9BD;
+ --line: #E3DACB;
+ --error: #B4472F;
+ --success: #2D7A3E;
+ --radius: 4px;
+ }
+ *{box-sizing:border-box;}
+ body{
+ margin:0;
+ background:var(--bg);
+ color:var(--ink);
+ font-family:'Work Sans', sans-serif;
+ -webkit-font-smoothing:antialiased;
+ }
+ .wrap{max-width:920px;margin:0 auto;padding:40px 24px 80px;}
+ /* [QR] CONFIGURACIÓN MODO PACIENTE (EXTRACTO EXCLUSIVO) */
+ body.modo-paciente header,
+ body.modo-paciente .app-screen,
+ body.modo-paciente nav.tabs,
+ body.modo-paciente .prof-only { 
+ display: none !important; 
+ }
+ body.modo-paciente #screen-hc { display: block !important; }
+ body.modo-paciente .panel:not(#t6) { display: none !important; }
+ body.modo-paciente #t6 { display: block !important; }
+ body.modo-paciente .wrap { padding-top: 20px; max-width: 500px; }
+ /* HEADERS */
+ .header-paciente {
+ display: none;
+ text-align: center;
+ margin-bottom: 25px; border-bottom: 1px solid var(--line);
+ padding-bottom: 15px;
+ }
+ body.modo-paciente .header-paciente { display: block; }
+ .header-paciente h2 {
+ font-family: 'Fraunces', serif;
+ color: var(--green-deep);
+ margin: 0 0 5px 0;
+ font-size: 26px;
+ }
+ .header-paciente p { font-size: 14px; color: var(--ink-soft); margin: 0; }
+ header{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-end;
+ border-bottom:2px solid var(--green);
+ padding-bottom:20px;
+ margin-bottom:8px;
+ }
+ .brand-eyebrow{
+ font-size:12px;
+ letter-spacing:.14em;
+ text-transform:uppercase;
+ color:var(--ochre);
+ font-weight:600;
+ margin-bottom:6px;
+ }
+ h1{
+ font-family:'Fraunces', serif;
+ font-weight:500;
+ font-size:38px;
+ margin:0;
+ letter-spacing:-0.01em;
+ color:var(--green-deep);
+ }
+ .meta-box{text-align:right;font-size:13px;color:var(--ink-soft);line-height:1.5;}
+ .meta-box strong{color:var(--ink);display:block;font-size:14px;}
+ /* ESTRUCTURA DE PANTALLAS V5 */
+ .app-screen { display: none; }
+ .app-screen.active { display: block; animation: fade .25s ease; }
+ /* PANTALLA 1: LOGIN PIN */
+ .login-container {
+ max-width: 400px;
+ margin: 80px auto 0;
+ background: var(--panel);
+ border: 1px solid var(--line);
+ border-radius: var(--radius);
+ padding: 30px;
+ text-align: center;
+ box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+ }
+ .login-container h2 { font-family: 'Fraunces', serif; color: var(--green-deep); margin-top: 0; }
+ .login-row { display: flex; gap: 10px; margin-top: 20px; }
+ /* PANTALLA 2: DASHBOARD CENTRAL */ .dash-container {
+ max-width: 600px;
+ margin: 40px auto 0;
+ background: var(--panel);
+ border: 1px solid var(--line);
+ border-radius: var(--radius);
+ padding: 35px;
+ box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+ }
+ .dash-container h2 { font-family: 'Fraunces', serif; color: var(--green-deep); margin-top: 0; text-align: center; }
+ .home-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+ /* Solo el campo que contiene la fila de radio buttons se centra (ej. "Experiencia previa").
+ Se usa :has() en vez de aplicarlo a .field en general, para no descentrar el resto de
+ los campos de texto de toda la ficha. */
+ .field:has(.radio-row){ display:flex; flex-direction:column; align-items:center; text-align:center; }
+ .field:has(.radio-row) .radio-row{ justify-content:center; }
+ .search-box {
+ background: #FBF8F2;
+ border: 1px solid var(--line);
+ padding: 20px;
+ border-radius: var(--radius);
+ margin-bottom: 25px;
+ }
+ .search-row { display: flex; gap: 10px; margin-top: 8px; }
+ .action-divider {
+ text-align: center;
+ margin: 20px 0;
+ position: relative;
+ color: var(--ink-soft);
+ font-size: 13px;
+ }
+ .action-divider::before, .action-divider::after {
+ content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--line);
+ }
+ .action-divider::before { left: 0; } .action-divider::after { right: 0; }
+ .btn-huge {
+ width: 100%; padding: 15px; font-size: 16px; background: var(--ochre); color: white; border: none;
+ border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: background 0.2s;
+ }
+ .btn-huge:hover { background: #b56c2f; }
+ /* TABS */
+ nav.tabs{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:28px; border-bottom:1px solid var(--line); padding-bottom:0; }
+ nav.tabs button{
+ font-family:'Work Sans',sans-serif; font-size:13.5px; font-weight:600; padding:10px 16px; background:none;
+ border:none; color:var(--ink-soft); cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-1px; letter-spacing:.01em;
+ }
+ nav.tabs button .num{ display:inline-block; font-family:'Fraunces',serif; color:var(--ochre); margin-right:6px; }
+ nav.tabs button.active{color:var(--green-deep);border-bottom-color:var(--ochre);}
+ nav.tabs button:hover{color:var(--green-deep);}
+ /* PANELS */
+ .panel{display:none;}
+ .panel.active{display:block;animation:fade .25s ease;}
+ @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+ .section-title{ font-family:'Fraunces',serif; font-size:22px; font-weight:500; color:var(--green-deep); margin:0 0 4px; }
+ .section-sub{font-size:13px;color:var(--ink-soft);margin:0 0 22px;} .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 20px;}
+ .grid.g3{grid-template-columns:repeat(3,1fr);}
+ .full{grid-column:1/-1;}
+ label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px;letter-spacing:.01em;}
+ label .opt{font-weight:400;color:var(--ink-soft);text-transform:none;}
+ input[type=text], input[type=date], input[type=number], input[type=file], input[type=password], select, textarea{
+ width:100%; padding:10px 12px; font-family:'Work Sans',sans-serif; font-size:14px; border:1px solid var(--line);
+ border-radius:var(--radius); background:var(--panel); color:var(--ink);
+ }
+ textarea{resize:vertical;min-height:70px;}
+ #DNI_Paciente:read-only, #Nombre_Paciente:read-only{ background:#EFECE5; color:var(--ink-soft); cursor:not-allowed; }
+ /* TABLAS EXTENDIDAS */
+ .antro-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px;}
+ .antro-table th, .antro-table td{border:1px solid var(--line);padding:9px 10px;text-align:left;}
+ .antro-table th{background:var(--ochre-soft);color:var(--green-deep);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em;}
+ .antro-table td input{border:none;padding:2px;width:100%;background:transparent;}
+ .antro-table tr:nth-child(even){background:#FBF8F2;}
+ .antro-table td.current{background:#F2ECDD;}
+ .radio-row{display:flex;gap:18px;margin-top:6px;}
+ .radio-row label{display:flex;align-items:center;gap:6px;font-weight:400;margin:0;}
+ .radio-row input{width:auto;}
+ .divider{height:1px;background:var(--line);margin:26px 0;}
+ /* FIRMA DIGITAL */
+ .signature-box{ border:2px dashed var(--line); border-radius:var(--radius); padding:16px; margin-top:12px; background:#FBF8F2; }
+ #signaturePad{ border:1px solid var(--line); border-radius:var(--radius); display:block; cursor:crosshair; width:100%; height:180px; background:#fff; }
+ .signature-buttons{ display:flex; gap:12px; margin-top:12px; }
+ .signature-buttons button{ flex:1; padding:10px; border:1px solid var(--line); background:var(--panel); border-radius:var(--radius); cursor:pointer; font-weight:600;}
+ /* VISOR PDF Y ELEMENTOS DE CONSENTIMIENTO V5 */
+ .pdf-viewer-container { display: none; margin-top: 15px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff; }
+ .pdf-viewer-container.active { display: block; }
+ .pdf-frame { width: 100%; height: 500px; border: none; }
+ .consent-box{ background:#FBF8F2; border:1px solid var(--line); border-left:4px solid var(--ochre); border-radius:var(--radius); padding:16px 18px; font-size:13px;color:var(--ink-soft); line-height:1.6; }
+ .consent-box label{display:flex;align-items:flex-start;gap:10px;font-weight:500;color:var(--ink);margin-top:12px;}
+ .consent-box input{width:auto;margin-top:2px;}
+ .consent-ok-banner{ display:none; background:#EBF3EB; border:1px solid var(--success); color:var(--green-deep); border-radius:var(--radius); padding:16px 18px;font-size:13.5px; line-height:1.6; margin-bottom:15px; }
+ .consent-ok-banner strong{display:block;font-size:14.5px;margin-bottom:4px;}
+ .consent-ok-banner.active{display:block;}
+ .consent-actions-v5 { display: flex; gap: 12px; margin-top: 15px; }
+ /* QR MODAL */
+ .qr-modal{ display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,.5); z-index:1000; align-items:center; justify-content:center; }
+ .qr-modal.active{ display:flex; }
+ .qr-content{ background:white; border-radius:var(--radius); padding:40px; text-align:center; max-width:500px; }
+ #qrcode{ margin:20px auto; display:flex; justify-content:center; }
+ /* BOTONES */
+ .form-actions{ display:flex; justify-content:space-between; margin-top:36px; padding-top:20px; border-top:1px solid var(--line); }
+ .btn{ font-family:'Work Sans',sans-serif; font-weight:600; padding:11px 22px; border-radius:var(--radius); border:1px solid var(--green); cursor:pointer; }
+ .btn.primary{background:var(--green);color:#fff;border-color:var(--green);width: 100%;}
+ body:not(.modo-paciente) .btn.primary { width: auto; } .btn.primary:disabled{background:var(--ink-soft);border-color:var(--ink-soft);cursor:not-allowed;}
+ .btn.qr{background:var(--ochre);color:white;border-color:var(--ochre);}
+ .btn.ghost{background:transparent;color:var(--ink-soft);border-color:var(--line);}
+ @media (max-width:640px){
+ .grid, .grid.g3{grid-template-columns:1fr;}
+ .form-actions{flex-direction:column; gap:10px;}
+ .consent-actions-v5 { flex-direction: column; }
+ }
 </style>
 </head>
 <body>
-
-<div class="header">
-  <div class="logo"><i class="fa-solid fa-leaf"></i></div>
-  <div>
-    <div class="header-title">NutriRegistros</div>
-    <div class="header-sub">Ficha clínica digital</div>
-  </div>
-  <div class="patient-badge" id="patientBadge"></div>
+<div class="wrap">
+ <div class="header-paciente">
+ <h2>Consentimiento de Atención</h2>
+ <p id="pacienteIdentificado">Paciente: Cargando...</p>
+ </div>
+ <header class="prof-only">
+ <div>
+ <div class="brand-eyebrow">Historia Clínica Nutricional</div>
+ <h1>NutriRegistros Pro</h1>
+ </div>
+ <div class="meta-box">
+ <strong id="profNameDisplay">Lic. César Bustos</strong>
+ <span id="profRegDisplay">Registro Activo Backend V5.0</span><br>
+ <span id="consultaDate"></span>
+ </div>
+ </header>
+ <div class="app-screen active" id="screen-login">
+ <div class="login-container">
+ <h2>Acceso Profesional</h2>
+ <p style="font-size:13px; color:var(--ink-soft);">Por seguridad, introduce tu PIN para habilitar el sistema.</p>
+ <div class="login-row">
+ <input type="password" id="pinInput" placeholder="PIN (4 dígitos)" maxlength="4" style="text-align: center; font-size: 16px; font-weight: 600;">
+ <button class="btn primary" style="width: auto;" onclick="validarPIN()">Ingresar</button>
+ </div>
+ </div>
+ </div>
+ <div class="app-screen" id="screen-home">
+ <div class="dash-container">
+ <div class="home-header">
+ <h2 style="margin:0;">Panel de Gestión Clínica</h2>
+ <button class="btn ghost" type="button" style="width:auto; padding:8px 16px; font-size:13px;" onclick="cerrarSesion()">[Salir] Salir</button>
+ </div>
+ <div class="search-box">
+ <label>Buscar Paciente Histórico</label>
+ <div class="search-row">
+ <input type="text" id="dniSearch" placeholder="Introduce el RUT / DNI del paciente">
+ <button class="btn primary" style="width: auto; white-space: nowrap;" id="btnBuscar" onclick="buscarPaciente()">Buscar Historial</button>
+ </div>
+ </div>
+ <div class="action-divider">ó también puedes</div> <button class="btn-huge" onclick="abrirFichaNuevoPaciente()">+ Crear Nuevo Paciente</button>
+ </div>
+ </div>
+ <div class="app-screen" id="screen-hc">
+ <div class="prof-only" style="text-align:right; margin-bottom:12px;">
+ <button class="btn ghost" type="button" style="width:auto; padding:7px 16px; font-size:12px;" onclick="volverAlHomeOrReset()"><- Salir / Buscar otropaciente</button>
+ </div>
+ <nav class="tabs prof-only">
+ <button class="active" data-tab="t1"><span class="num">01</span>Datos y anamnesis</button>
+ <button data-tab="t2"><span class="num">02</span>Antropometría</button>
+ <button data-tab="t3"><span class="num">03</span>Bioquímicos</button>
+ <button data-tab="t5"><span class="num">04</span>Diagnóstico</button>
+ <button data-tab="t6"><span class="num">05</span>Consentimiento</button>
+ </nav>
+ <div class="panel active" id="t1">
+ <p class="section-title">Datos generales y anamnesis</p>
+ <p class="section-sub">Información básica del paciente y contexto social/médico.</p>
+ <div class="grid">
+ <div class="field"><label>Nombre completo</label><input type="text" id="Nombre_Paciente"></div>
+ <div class="field"><label>RUT / Documento (DNI)</label><input type="text" id="DNI_Paciente"></div>
+ <div class="field"><label>Fecha de nacimiento</label><input type="date" id="Fecha_Nacimiento"></div>
+ <div class="field"><label>Edad</label><input type="number" id="Edad_Paciente"></div>
+ <div class="field"><label>Ocupación</label><input type="text" id="Ocupacion_Paciente"></div>
+ <div class="field"><label>¿Con quién vive?</label><input type="text" id="Convivencia"></div>
+ <div class="field full"><label>Motivo de consulta</label><textarea id="Motivo_Consulta"></textarea></div>
+ </div>
+ <div class="divider"></div>
+ <div class="grid g3">
+ <div class="field">
+ <label>Actividad física</label>
+ <select id="Actividad_Fisica"><option>Sedentario</option><option>Ligera (1-2x/sem)</option><option>Moderada (3-4x/sem)</option><option>Intensa(5+/sem)</option></select>
+ </div>
+ <div class="field"><label>Experiencia nutricionista previa</label>
+ <div class="radio-row">
+ <label><input type="radio" name="Experiencia_Previa" value="Sí"> Sí</label>
+ <label><input type="radio" name="Experiencia_Previa" value="No"> No</label>
+ </div>
+ </div>
+ <div class="field"><label>Medicamentos actuales <span class="opt">(opcional)</span></label><input type="text" id="Medicamentos"></div>
+ </div>
+ <div class="divider"></div>
+ <div class="grid">
+ <div class="field"><label>Antecedentes mórbidos personales</label><textarea id="Antecedentes_Personales" placeholder="Diabetes,hipertensión..."></textarea></div>
+ <div class="field"><label>Antecedentes quirúrgicos</label><textarea id="Antecedentes_Quirurgicos" placeholder="Cirugías relevantes..."></textarea></div>
+ <div class="field full"><label>Antecedentes familiares</label><textarea id="Antecedentes_Familiares" placeholder="Enfermedadeshereditarias..."></textarea></div>
+ </div> </div>
+ <div class="panel" id="t2">
+ <p class="section-title">Evaluación antropométrica</p>
+ <p class="section-sub">Métricas de control evolutivo.</p>
+ <table class="antro-table">
+ <thead>
+ <tr>
+ <th rowspan="2">Medición</th>
+ <th rowspan="2" class="current">Evolución Actual<br><span style="font-weight:400; font-size:10px; text-transform:none;">(Datos de hoy)</span></th>
+ <th colspan="2">Historial de Controles</th>
+ </tr>
+ <tr>
+ <th id="histHeaderAntro1">-- <span style="font-weight:400; font-size:10px; text-transform:none;">(Sin datos)</span></th>
+ <th id="histHeaderAntro2">-- <span style="font-weight:400; font-size:10px; text-transform:none;">(Sin datos)</span></th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr><td>Peso habitual (kg)</td><td class="current"><input type="text" id="Peso_Habitual" placeholder="Ingresar..."></td><tdid="hist1_Peso_Habitual">--</td><td id="hist2_Peso_Habitual">--</td></tr>
+ <tr><td>Peso actual (kg)</td><td class="current"><input type="number" id="Peso_Actual" step="0.1" placeholder="Ingresar..."></td><tdid="hist1_Peso_Actual">--</td><td id="hist2_Peso_Actual">--</td></tr>
+ <tr><td>Estatura (cm)</td><td class="current"><input type="number" id="Estatura" step="1" placeholder="Ingresar..."></td><td id="hist1_Estatura">--</td><tdid="hist2_Estatura">--</td></tr>
+ <tr><td>IMC (Calculado)</td><td class="current"><input type="text" id="IMC" readonly style="font-weight:bold;" placeholder="Ingresar..."></td><tdid="hist1_IMC">--</td><td id="hist2_IMC">--</td></tr>
+ <tr><td>Circ. cintura (cm)</td><td class="current"><input type="text" id="Circ_Cintura" placeholder="Ingresar..."></td><td id="hist1_Circ_Cintura">--</td><tdid="hist2_Circ_Cintura">--</td></tr>
+ <tr><td>Circ. pantorrilla (cm)</td><td class="current"><input type="text" id="Circ_Pantorrilla" placeholder="Ingresar..."></td><tdid="hist1_Circ_Pantorrilla">--</td><td id="hist2_Circ_Pantorrilla">--</td></tr>
+ <tr><td>Circ. braquial (cm)</td><td class="current"><input type="text" id="Circ_Braquial" placeholder="Ingresar..."></td><tdid="hist1_Circ_Braquial">--</td><td id="hist2_Circ_Braquial">--</td></tr>
+ </tbody>
+ </table>
+ </div>
+ <div class="panel" id="t3">
+ <p class="section-title">Indicadores bioquímicos</p>
+ <p class="section-sub">Resultados analíticos de laboratorio aportados.</p>
+ <table class="antro-table">
+ <thead>
+ <tr>
+ <th rowspan="2">Examen Bioquímico</th>
+ <th rowspan="2" class="current">Resultado Actual</th>
+ <th colspan="2">Historial de Exámenes</th>
+ </tr>
+ <tr>
+ <th id="histHeaderBioq1">-- <span style="font-weight:400; font-size:10px; text-transform:none;">(Sin datos)</span></th>
+ <th id="histHeaderBioq2">-- <span style="font-weight:400; font-size:10px; text-transform:none;">(Sin datos)</span></th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr><td>Glicemia</td><td class="current"><input type="text" id="Glicemia" placeholder="Ingresar..."></td><td id="hist1_Glicemia">--</td><tdid="hist2_Glicemia">--</td></tr>
+ <tr><td>Colesterol total</td><td class="current"><input type="text" id="Colesterol" placeholder="Ingresar..."></td><td id="hist1_Colesterol">--</td><tdid="hist2_Colesterol">--</td></tr>
+ <tr><td>Triglicéridos</td><td class="current"><input type="text" id="Trigliceridos" placeholder="Ingresar..."></td><td id="hist1_Trigliceridos">--</td><tdid="hist2_Trigliceridos">--</td></tr> <tr><td>HbA1c</td><td class="current"><input type="text" id="HbA1c" placeholder="Ingresar..."></td><td id="hist1_HbA1c">--</td><tdid="hist2_HbA1c">--</td></tr>
+ <tr><td>Otro examen</td><td class="current"><input type="text" id="Otro_Examen" placeholder="Ingresar..."></td><td id="hist1_Otro_Examen">--</td><tdid="hist2_Otro_Examen">--</td></tr>
+ <tr><td>Otro examen 2</td><td class="current"><input type="text" id="Otro_Examen2" placeholder="Ingresar..."></td><td id="hist1_Otro_Examen2">--</td><tdid="hist2_Otro_Examen2">--</td></tr>
+ <tr><td>Otro examen 3</td><td class="current"><input type="text" id="Otro_Examen3" placeholder="Ingresar..."></td><td id="hist1_Otro_Examen3">--</td><tdid="hist2_Otro_Examen3">--</td></tr>
+ </tbody>
+ </table>
+ <p class="section-sub" style="font-style:italic; margin-top:10px;">* Valores de referencia: Glicemia (70-100 mg/dL), Colesterol total (&lt;200 mg/dL),Triglicéridos (&lt;150 mg/dL), HbA1c (&lt;7%).</p>
+ </div>
+ <div class="panel" id="t5">
+ <p class="section-title">Diagnóstico e indicaciones</p>
+ <p class="section-sub">Diagnóstico Nutricional Integrado (DNI) y metas métricas.</p>
+ <div class="grid">
+ <div class="field full"><label>Diagnóstico (DNI)</label><textarea id="Diagnostico_DNI" placeholder="Describa el diagnóstico..."></textarea></div>
+ <div class="field"><label>Requerimiento energético (kcal)</label><input type="number" id="Requerimiento"></div>
+ <div class="field"><label>Distribución de macronutrientes</label><input type="text" id="Macros" placeholder="Ej: 50% HC / 20% PROT / 30% LIP"></div>
+ <div class="field full"><label>Plan de Trabajo</label><textarea id="Plan_Trabajo"></textarea></div>
+ </div>
+ </div>
+ <div class="panel" id="t6">
+ <p class="section-title prof-only">Módulo Legal de Consentimiento</p>
+ <div class="consent-ok-banner" id="consentOkBanner">
+ <strong>v Consentimiento Legal Activo e Histórico</strong>
+ Este paciente ya cuenta con la firma del marco de términos, condiciones y privacidad registrada el <span id="fechaFirmaPrevia">--</span>.
+ </div>
+ <div class="pdf-viewer-container" id="pdfViewerContainer">
+ <iframe class="pdf-frame" id="pdfViewerFrame" src=""></iframe>
+ </div>
+ <div id="zonaConsentimiento">
+ <div class="consent-box" style="margin-bottom:15px;">
+ <p><strong>Declaración de Consentimiento Informado</strong></p>
+ <p>Acepto el tratamiento nutricional sugerido y autorizo el almacenamiento de mis datos clínicos de forma confidencial bajo el sistema NutriRegistros Pro.</p
+ <label><input type="checkbox" id="checkConsent"> Acepto términos y condiciones</label>
+ <label><input type="checkbox" id="privacidadCheck"> Autorizo el tratamiento de mis datos personales</label>
+ </div>
+ <div class="signature-box">
+ <label>Por favor, firme con su dedo dentro del recuadro:</label>
+ <canvas id="signaturePad"></canvas>
+ <div class="signature-buttons">
+ <button type="button" onclick="limpiarFirma()">Limpiar Firma</button>
+ </div>
+ </div>
+ 
+ <div class="consent-actions-v5 prof-only">
+ <button class="btn qr" type="button" id="btnQR" onclick="generarQR()" style="flex: 1;">[QR] Compartir QR al Paciente</button>
+ <button class="btn primary" type="button" id="btnSoloConsentimiento" onclick="guardarSoloConsentimiento()" style="flex: 1; background: var(--ochre);border-color: var(--ochre);">v Registrar Solo Firma Actual</button>
+ </div>
+ </div> </div>
+ <div class="form-actions" style="justify-content:flex-end;">
+ <button class="btn primary" id="btnGuardar" onclick="enviarFormulario()">v Guardar</button>
+ </div>
+ </div>
 </div>
-
-<div class="nav-wrap">
-  <button class="nav-btn active" onclick="showTab('anamnesis', this)">
-    <i class="fa-solid fa-clipboard-list"></i><span>Anamnesis inicial</span>
-  </button>
-  <button class="nav-btn" onclick="showTab('mediciones', this)">
-    <i class="fa-solid fa-ruler"></i><span>Mediciones</span>
-  </button>
+<div class="qr-modal" id="qrModal">
+ <div class="qr-content">
+ <h2>Firma desde tu Celular</h2>
+ <p>Escanea este código con el móvil del paciente para abrir el entorno seguro de firma legal:</p>
+ <div id="qrcode"></div>
+ <button class="btn primary" onclick="document.getElementById('qrModal').classList.remove('active')">Cerrar</button>
+ </div>
 </div>
-
-<div class="main">
-
-  <!-- ══ TAB: ANAMNESIS ══ -->
-  <div class="tab active" id="tab-anamnesis">
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-user"></i> Datos personales</div>
-      <div class="row row-2">
-        <div class="field"><label>Nombre y apellido *</label><input type="text" id="nombre" placeholder="Ej: García, Laura" oninput="updateBadge()"></div>
-        <div class="field"><label>Fecha de nacimiento</label><input type="date" id="fecha_nac"></div>
-      </div>
-      <div class="row row-3">
-        <div class="field"><label>Sexo biológico</label>
-          <select id="sexo"><option value="">—</option><option>Femenino</option><option>Masculino</option><option>Otro</option></select>
-        </div>
-        <div class="field"><label>Ocupación</label><input type="text" id="ocupacion"></div>
-        <div class="field"><label>Contacto (tel/email)</label><input type="text" id="contacto"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-comment-medical"></i> Motivo de consulta</div>
-      <div class="row row-1">
-        <div class="field"><label>Motivo principal</label><textarea id="motivo" placeholder="¿Por qué busca atención nutricional?"></textarea></div>
-      </div>
-      <div class="row row-1">
-        <div class="field"><label>Objetivos del paciente</label><textarea id="objetivos" placeholder="¿Qué espera lograr con el tratamiento?"></textarea></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-notes-medical"></i> Antecedentes clínicos</div>
-      <div class="section-label">Patologías personales</div>
-      <div class="check-grid">
-        <label class="check-item"><input type="checkbox" value="Diabetes tipo 2"> Diabetes tipo 2</label>
-        <label class="check-item"><input type="checkbox" value="Hipertensión"> Hipertensión</label>
-        <label class="check-item"><input type="checkbox" value="Dislipemia"> Dislipemia</label>
-        <label class="check-item"><input type="checkbox" value="Hipotiroidismo"> Hipotiroidismo</label>
-        <label class="check-item"><input type="checkbox" value="SOP"> SOP</label>
-        <label class="check-item"><input type="checkbox" value="Resistencia a la insulina"> Resistencia a la insulina</label>
-        <label class="check-item"><input type="checkbox" value="Enfermedad celíaca"> Celiaquía</label>
-        <label class="check-item"><input type="checkbox" value="Obesidad"> Obesidad</label>
-        <label class="check-item"><input type="checkbox" value="Anemia"> Anemia</label>
-      </div>
-      <div class="row row-1" style="margin-top:10px">
-        <div class="field"><label>Otras patologías</label><input type="text" id="patol_otras" placeholder="Agregar otras..."></div>
-      </div>
-      <div class="row row-2" style="margin-top:8px">
-        <div class="field"><label>Antecedentes familiares relevantes</label><textarea id="ant_familiar" placeholder="Diabetes, enf. cardiovascular, cáncer..."></textarea></div>
-        <div class="field"><label>Medicamentos / suplementos actuales</label><textarea id="medicamentos"></textarea></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i> Alergias e intolerancias</div>
-      <div class="check-grid">
-        <label class="check-item"><input type="checkbox" value="Lactosa"> Lactosa</label>
-        <label class="check-item"><input type="checkbox" value="Gluten"> Gluten</label>
-        <label class="check-item"><input type="checkbox" value="Fructosa"> Fructosa</label>
-        <label class="check-item"><input type="checkbox" value="Mariscos"> Mariscos</label>
-        <label class="check-item"><input type="checkbox" value="Frutos secos"> Frutos secos</label>
-        <label class="check-item"><input type="checkbox" value="Huevo"> Huevo</label>
-        <label class="check-item"><input type="checkbox" value="Soja"> Soja</label>
-        <label class="check-item"><input type="checkbox" value="Pescado"> Pescado</label>
-      </div>
-      <div class="row row-1" style="margin-top:10px">
-        <div class="field"><label>Otras alergias / intolerancias</label><input type="text" id="alerg_otras"></div>
-      </div>
-      <div class="section-label">Síntomas digestivos frecuentes</div>
-      <div class="check-grid">
-        <label class="check-item"><input type="checkbox" value="Distensión abdominal"> Distensión abdominal</label>
-        <label class="check-item"><input type="checkbox" value="Estreñimiento"> Estreñimiento</label>
-        <label class="check-item"><input type="checkbox" value="Diarrea frecuente"> Diarrea frecuente</label>
-        <label class="check-item"><input type="checkbox" value="Acidez / reflujo"> Acidez / reflujo</label>
-        <label class="check-item"><input type="checkbox" value="Náuseas"> Náuseas</label>
-        <label class="check-item"><input type="checkbox" value="Gases excesivos"> Gases</label>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-weight-scale"></i> Historia de peso</div>
-      <div class="row row-3">
-        <div class="field"><label>Peso actual (kg)</label><input type="number" id="peso_actual" step="0.1" min="20" max="300"></div>
-        <div class="field"><label>Peso habitual (kg)</label><input type="number" id="peso_habitual" step="0.1" min="20" max="300"></div>
-        <div class="field"><label>Peso ideal percibido (kg)</label><input type="number" id="peso_ideal" step="0.1" min="20" max="300"></div>
-      </div>
-      <div class="row row-1">
-        <div class="field"><label>Cambios de peso en los últimos 6 meses</label><textarea id="cambios_peso"></textarea></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-moon"></i> Sueño y estrés</div>
-      <div class="slider-row"><span class="slider-label">Calidad del sueño (1–10)</span>
-        <input type="range" min="1" max="10" value="5" id="sueño_cal" oninput="document.getElementById('sv1').textContent=this.value">
-        <span class="slider-val" id="sv1">5</span>
-      </div>
-      <div class="slider-row"><span class="slider-label">Nivel de estrés (1–10)</span>
-        <input type="range" min="1" max="10" value="5" id="estres_cal" oninput="document.getElementById('sv2').textContent=this.value">
-        <span class="slider-val" id="sv2">5</span>
-      </div>
-      <div class="row row-2" style="margin-top:12px">
-        <div class="field"><label>Horas de sueño por noche</label><input type="number" id="horas_sueño" min="1" max="14" step="0.5"></div>
-        <div class="field"><label>Fuentes principales de estrés</label><input type="text" id="fuentes_estres"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-person-running"></i> Actividad física</div>
-      <div class="row row-3">
-        <div class="field"><label>Tipo de actividad</label>
-          <select id="act_tipo"><option value="">—</option><option>Sedentario</option><option>Caminatas</option><option>Gym / musculación</option><option>Deportes</option><option>Cardio</option><option>Mixto</option></select>
-        </div>
-        <div class="field"><label>Frecuencia semanal</label>
-          <select id="act_freq"><option value="">—</option><option>No realiza</option><option>1–2 días</option><option>3–4 días</option><option>5+ días</option></select>
-        </div>
-        <div class="field"><label>Duración (min/sesión)</label><input type="number" id="act_dur" min="10" max="300"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-pen-to-square"></i> Observaciones adicionales</div>
-      <div class="row row-1">
-        <div class="field"><textarea id="obs_anamnesis" placeholder="Cualquier información relevante no contemplada arriba..."></textarea></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ TAB: MEDICIONES ══ -->
-  <div class="tab" id="tab-mediciones">
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-user"></i> Identificación</div>
-      <div class="row row-3">
-        <div class="field"><label>Nombre y apellido *</label><input type="text" id="med_nombre" placeholder="García, Laura" oninput="updateBadge()"></div>
-        <div class="field"><label>Fecha de medición</label><input type="date" id="med_fecha"></div>
-        <div class="field"><label>N° de control</label>
-          <select id="med_num"><option>1ª consulta</option><option>Control 1</option><option>Control 2</option><option>Control 3</option><option>Control 4</option><option>Control 5</option><option>Control 6+</option></select>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-weight-scale"></i> Medidas básicas</div>
-      <div class="row row-3">
-        <div class="field"><label>Peso (kg)</label><input type="number" id="m_peso" step="0.1" min="20" max="300"></div>
-        <div class="field"><label>Altura (cm)</label><input type="number" id="m_talla" step="0.5" min="100" max="220"></div>
-        <div class="field"><label>IMC (calculado)</label><input type="text" id="m_imc" readonly placeholder="—"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-flask"></i> Datos de laboratorio</div>
-      <div class="lab-grid">
-        <div class="field"><label>Glucemia (mg/dL)</label><input type="number" id="lab_glucemia" step="0.1" min="0"></div>
-        <div class="field"><label>Colesterol total (mg/dL)</label><input type="number" id="lab_colesterol" step="0.1" min="0"></div>
-        <div class="field"><label>Triglicéridos (mg/dL)</label><input type="number" id="lab_trigliceridos" step="0.1" min="0"></div>
-        <div class="field"><label>HDL (mg/dL)</label><input type="number" id="lab_hdl" step="0.1" min="0"></div>
-        <div class="field"><label>LDL (mg/dL)</label><input type="number" id="lab_ldl" step="0.1" min="0"></div>
-        <div class="field"><label>Tensión arterial (mmHg)</label><input type="text" id="lab_tension" placeholder="Ej: 120/80"></div>
-      </div>
-      <div class="row row-1" style="margin-top:12px">
-        <div class="field"><label>Otros</label><input type="text" id="lab_otros" placeholder="Otros valores de laboratorio..."></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-utensils"></i> Alimentación del día</div>
-      <div class="row row-1">
-        <div class="field"><label>¿Cuántas comidas realizó hoy?</label>
-          <select id="med_comidas">
-            <option value="">—</option>
-            <option>1</option><option>2</option><option>3</option>
-            <option>4</option><option>5</option><option>6 o más</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="fa-solid fa-pen-to-square"></i> Observaciones clínicas</div>
-      <div class="row row-1"><div class="field"><textarea id="m_obs"></textarea></div></div>
-    </div>
-  </div>
-
-</div><!-- /main -->
-
-<!-- BOTTOM BAR -->
-<div class="bottom-bar">
-  <button class="btn btn-primary" id="btnEnviar" onclick="enviarTodo()">
-    <i class="fa-solid fa-paper-plane"></i> Enviar
-  </button>
-  <div class="status" id="statusMsg"></div>
+<div class="qr-modal" id="firmaPendienteModal">
+ <div class="qr-content">
+ <h2>v Ficha Guardada</h2>
+ <p>Este paciente todavía no tiene el consentimiento firmado. ¿Cómo prefieres continuar?</p>
+ <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
+ <button class="btn qr" type="button" onclick="document.getElementById('firmaPendienteModal').classList.remove('active'); generarQR();">[QR] Generar QR para quefirme desde su celular</button>
+ <button class="btn primary" type="button" onclick="firmarAhoraEnEsteDispositivo()">✍■ Firmar aquí, en este dispositivo</button>
+ <button class="btn ghost" type="button" onclick="firmarMasTarde()">Más tarde</button>
+ </div>
+ </div>
 </div>
-
 <script>
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwndIJLCuR92A_TNVTUcA45TvRHV7BIE9kk0tmGh5p-GO_aaJWFt6IoIttKSNT9tDru7Q/exec';
-
-function init() {
-  const today = new Date().toISOString().split('T')[0];
-  document.querySelectorAll('input[type=date]').forEach(el => { if(!el.value) el.value = today; });
-  document.getElementById('m_peso')?.addEventListener('input', calcIMC);
-  document.getElementById('m_talla')?.addEventListener('input', calcIMC);
-  document.querySelectorAll('.check-item input').forEach(cb => {
-    cb.addEventListener('change', () => cb.closest('.check-item').classList.toggle('checked', cb.checked));
-  });
-}
-
-function calcIMC() {
-  const p = parseFloat(document.getElementById('m_peso').value);
-  const t = parseFloat(document.getElementById('m_talla').value) / 100;
-  document.getElementById('m_imc').value = (p && t) ? (p/t/t).toFixed(1) : '';
-}
-
-function showTab(id, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  btn.classList.add('active');
-}
-
-function updateBadge() {
-  const name = document.getElementById('nombre')?.value || document.getElementById('med_nombre')?.value;
-  const badge = document.getElementById('patientBadge');
-  if(name) { badge.textContent = name; badge.style.display='block'; }
-  else badge.style.display='none';
-}
-
-function v(id) { return document.getElementById(id)?.value || '—'; }
-
-function getNombreAnamnesis() { return document.getElementById('nombre')?.value?.trim() || ''; }
-function getNombreMediciones() { return document.getElementById('med_nombre')?.value?.trim() || ''; }
-
-// ── PDF ANAMNESIS ──
-function buildPDFAnamnesis() {
-  const checks = selector => [...document.querySelectorAll(selector+':checked')].map(c=>c.value).join(', ') || 'Ninguno/a';
-  const lines = [];
-  const add = (t, s='body') => lines.push({t, s});
-
-  add('ANAMNESIS NUTRICIONAL INICIAL','title');
-  add(`Generado: ${new Date().toLocaleDateString('es-AR')} · Paciente: ${v('nombre')}`,'sub');
-  add('───────────────────────────────────────','sep');
-  add('DATOS PERSONALES','section');
-  add(`Nombre y apellido: ${v('nombre')}`);
-  add(`Fecha de nacimiento: ${v('fecha_nac')} · Sexo biológico: ${v('sexo')}`);
-  add(`Ocupación: ${v('ocupacion')} · Contacto: ${v('contacto')}`);
-  add('───────────────────────────────────────','sep');
-  add('MOTIVO DE CONSULTA','section');
-  add(`Motivo principal: ${v('motivo')}`);
-  add(`Objetivos: ${v('objetivos')}`);
-  add('───────────────────────────────────────','sep');
-  add('ANTECEDENTES CLÍNICOS','section');
-  add(`Patologías: ${checks('#tab-anamnesis .card:nth-child(3) .check-grid:first-of-type input')}${v('patol_otras')!=='—'?' / '+v('patol_otras'):''}`);
-  add(`Antecedentes familiares: ${v('ant_familiar')}`);
-  add(`Medicamentos / suplementos: ${v('medicamentos')}`);
-  add('───────────────────────────────────────','sep');
-  add('ALERGIAS E INTOLERANCIAS','section');
-  const alergs = [...document.querySelectorAll('#tab-anamnesis .card:nth-child(4) .check-grid:first-of-type input:checked')].map(c=>c.value).join(', ') || 'Ninguna';
-  add(`${alergs}${v('alerg_otras')!=='—'?' / '+v('alerg_otras'):''}`);
-  const sints = [...document.querySelectorAll('#tab-anamnesis .card:nth-child(4) .check-grid:last-of-type input:checked')].map(c=>c.value).join(', ') || 'Ninguno';
-  add(`Síntomas digestivos: ${sints}`);
-  add('───────────────────────────────────────','sep');
-  add('HISTORIA DE PESO','section');
-  add(`Peso actual: ${v('peso_actual')} kg · Peso habitual: ${v('peso_habitual')} kg · Peso ideal percibido: ${v('peso_ideal')} kg`);
-  add(`Cambios recientes (6 meses): ${v('cambios_peso')}`);
-  add('───────────────────────────────────────','sep');
-  add('SUEÑO Y ESTRÉS','section');
-  add(`Calidad del sueño (1-10): ${document.getElementById('sueño_cal')?.value||'—'} · Horas/noche: ${v('horas_sueño')}`);
-  add(`Nivel de estrés (1-10): ${document.getElementById('estres_cal')?.value||'—'} · Fuentes: ${v('fuentes_estres')}`);
-  add('───────────────────────────────────────','sep');
-  add('ACTIVIDAD FÍSICA','section');
-  add(`Tipo: ${v('act_tipo')} · Frecuencia: ${v('act_freq')} · Duración: ${v('act_dur')} min/sesión`);
-  add('───────────────────────────────────────','sep');
-  add('OBSERVACIONES','section');
-  add(v('obs_anamnesis'));
-
-  return renderDoc(lines);
-}
-
-// ── PDF MEDICIONES ──
-function buildPDFMediciones() {
-  const lines = [];
-  const add = (t, s='body') => lines.push({t, s});
-
-  add('MEDICIONES Y LABORATORIO','title');
-  add(`${v('med_nombre')} · ${v('med_num')} · Fecha: ${v('med_fecha')}`,'sub');
-  add('───────────────────────────────────────','sep');
-  add('MEDIDAS BÁSICAS','section');
-  add(`Peso: ${v('m_peso')} kg · Altura: ${v('m_talla')} cm · IMC: ${v('m_imc')}`);
-  add('───────────────────────────────────────','sep');
-  add('DATOS DE LABORATORIO','section');
-  add(`Glucemia: ${v('lab_glucemia')} mg/dL`);
-  add(`Colesterol total: ${v('lab_colesterol')} mg/dL`);
-  add(`Triglicéridos: ${v('lab_trigliceridos')} mg/dL`);
-  add(`HDL: ${v('lab_hdl')} mg/dL · LDL: ${v('lab_ldl')} mg/dL`);
-  add(`Tensión arterial: ${v('lab_tension')} mmHg`);
-  add(`Otros: ${v('lab_otros')}`);
-  add('───────────────────────────────────────','sep');
-  add('ALIMENTACIÓN DEL DÍA','section');
-  add(`Comidas realizadas: ${v('med_comidas')}`);
-  add('───────────────────────────────────────','sep');
-  add('OBSERVACIONES CLÍNICAS','section');
-  add(v('m_obs'));
-
-  return renderDoc(lines);
-}
-
-// ── RENDER PDF ──
-function renderDoc(lines) {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit:'mm', format:'a4' });
-  const ml = 20, mw = 170;
-  let y = 20;
-  const nl = (n=6) => { y+=n; if(y>275){doc.addPage(); y=20;} };
-  lines.forEach(({t,s}) => {
-    if(s==='title') {
-      doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(15,110,86);
-      doc.text(t, ml, y); nl(9);
-    } else if(s==='sub') {
-      doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(120,120,120);
-      doc.text(t, ml, y); nl(8);
-    } else if(s==='sep') {
-      doc.setFontSize(7); doc.setTextColor(210,210,210);
-      doc.text(t, ml, y); nl(5);
-    } else if(s==='section') {
-      doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(15,110,86);
-      doc.text(t, ml, y); nl(6);
-    } else {
-      doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(50,50,50);
-      const wrapped = doc.splitTextToSize(t||'—', mw);
-      wrapped.forEach(line => { doc.text(line, ml, y); nl(5); });
-    }
-  });
-  doc.setFontSize(8); doc.setTextColor(180,180,180);
-  doc.text(`NutriRegistros · ${new Date().toLocaleString('es-AR')}`, ml, 288);
-  return doc;
-}
-
-// ── ENVÍO MÚLTIPLE ──
-function showStatus(msg, type) {
-  const el = document.getElementById('statusMsg');
-  el.textContent = msg; el.className = 'status ' + type;
-  setTimeout(() => { el.className = 'status'; }, 7000);
-}
-
-async function subirPDF(doc, fileName) {
-  const base64 = doc.output('datauristring').split(',')[1];
-  await fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ base64, name: fileName })
-  });
-}
-
-function getFileName(nombre, tipo) {
-  const fecha = new Date().toISOString().split('T')[0];
-  return `${nombre} — ${tipo} — ${fecha}.pdf`;
-}
-
-async function enviarTodo() {
-  const nombreA = getNombreAnamnesis();
-  const nombreM = getNombreMediciones();
-
-  if(!nombreA && !nombreM) {
-    showStatus('Ingresá el nombre del paciente en al menos un formulario.', 'err');
-    return;
-  }
-
-  const btn = document.getElementById('btnEnviar');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
-
-  const enviados = [];
-  const errores = [];
-
-  try {
-    if(nombreA) {
-      try {
-        const pdf = buildPDFAnamnesis();
-        await subirPDF(pdf, getFileName(nombreA, 'Anamnesis'));
-        enviados.push('Anamnesis');
-      } catch(e) { errores.push('Anamnesis'); }
-    }
-
-    if(nombreM) {
-      try {
-        const pdf = buildPDFMediciones();
-        await subirPDF(pdf, getFileName(nombreM, 'Mediciones'));
-        enviados.push('Mediciones');
-      } catch(e) { errores.push('Mediciones'); }
-    }
-
-    if(enviados.length > 0 && errores.length === 0) {
-      showStatus(`✓ Enviado correctamente: ${enviados.join(', ')}`, 'ok');
-      resetForms();
-    } else if(enviados.length > 0) {
-      showStatus(`✓ ${enviados.join(', ')} enviados. Error en: ${errores.join(', ')}`, 'err');
-    } else {
-      showStatus('Error al enviar. Intentá de nuevo.', 'err');
-    }
-  } catch(e) {
-    showStatus('Error al enviar: ' + e.message, 'err');
-  }
-
-  btn.disabled = false;
-  btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Enviar';
-}
-
-function resetForms() {
-  ['tab-anamnesis','tab-mediciones'].forEach(tabId => {
-    const section = document.getElementById(tabId);
-    if(!section) return;
-    section.querySelectorAll('input:not([type=checkbox]):not([type=range]):not([readonly])').forEach(el => el.value='');
-    section.querySelectorAll('textarea').forEach(el => el.value='');
-    section.querySelectorAll('select').forEach(el => el.selectedIndex=0);
-    section.querySelectorAll('input[type=checkbox]').forEach(el => {
-      el.checked=false;
-      el.closest('.check-item')?.classList.remove('checked');
-    });
-    section.querySelectorAll('input[type=range]').forEach(el => {
-      el.value=el.defaultValue;
-      const val = el.closest('.slider-row')?.querySelector('.slider-val');
-      if(val) val.textContent=el.defaultValue;
-    });
-  });
-  const badge = document.getElementById('patientBadge');
-  if(badge) { badge.textContent=''; badge.style.display='none'; }
-}
-
-init();
+ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzaqNRzfh1IRAEQQyUcCZk2KFSmscPnAky2rmCna_W5-hppNbrVt5nw_T5-fStsC-iZnw/exec";
+ const PIN_ESTATICO = "3308"; // PIN de validación local inmediata
+ 
+ let canvas, ctx, drawing = false;
+ let esModoPaciente = false;
+ let consentimientoPrevioExiste = false;
+ let firmaPreviaBase64 = "";
+ // FIX BUG "guardados duplicados": bandera compartida entre guardarSoloConsentimiento()
+ // y enviarFormulario(). Ambas escriben al mismo backend; sin esto, clics repetidos
+ // (o un doble-tap en celular) mientras la red está lenta disparan varios envíos en
+ // paralelo, generando carpetas y filas duplicadas.
+ // FIX: la firma (QR o en el mismo dispositivo) ahora solo se habilita DESPUÉS de que el
+ // profesional guardó la evolución al menos una vez en esta sesión (o si el paciente ya
+ // tenía consentimiento vigente de una atención anterior). Antes, firmar y guardar podían
+ // dispararse en cualquier orden y competían por crear la misma carpeta/fila en paralelo.
+ let puedeFirmar = false;
+ let envioEnCurso = false;
+ // FIX BUG "evolución duplicada tras firmar": una vez guardada la ficha en esta sesión,
+ // el mismo botón "Guardar" deja de re-enviar la evolución; solo sirve para volver al
+ // inicio. Esto es lo que evitaba que, tras firmar (QR o en el mismo dispositivo) y volver
+ // a esta pantalla, un clic en "Guardar" (pensando que era "salir") creara una segunda
+ // evolución idéntica.
+ let evolucionYaGuardada = false;
+ // FIX BUG "evolución repetida sin cambios": se activa en cuanto el usuario edita algo
+ // en la ficha (ver listener delegado en DOMContentLoaded). Se resetea a false cada vez
+ // que se carga un paciente (nuevo o buscado), antes de que el profesional toque nada. let formularioModificado = false;
+ document.addEventListener('DOMContentLoaded', () => {
+ const params = new URLSearchParams(window.location.search);
+ 
+ if(params.get('modo') === 'paciente') {
+ esModoPaciente = true;
+ document.body.classList.add('modo-paciente');
+ 
+ const dni = params.get('dni') || '';
+ const nombre = params.get('nombre') ? decodeURIComponent(params.get('nombre')) : '';
+ 
+ document.getElementById('DNI_Paciente').value = dni;
+ document.getElementById('Nombre_Paciente').value = nombre;
+ document.getElementById('pacienteIdentificado').textContent = `Paciente: ${nombre} (${dni})`;
+ 
+ // Activa vista directa de HC (forzada en t6 por CSS)
+ cambiarPantalla('screen-hc');
+ cambiarTab('t6');
+ }
+ 
+ document.getElementById('consultaDate').textContent = 'Consulta: ' + new Date().toLocaleDateString();
+ 
+ document.querySelectorAll('nav.tabs button').forEach(btn => {
+ btn.onclick = () => cambiarTab(btn.dataset.tab);
+ });
+ // Detectar Enter en campo PIN
+ document.getElementById('pinInput').addEventListener('keypress', function(e) {
+ if (e.key === 'Enter') validarPIN();
+ });
+ // Detectar Enter en campo de búsqueda de DNI (antes solo funcionaba el botón)
+ document.getElementById('dniSearch').addEventListener('keypress', function(e) {
+ if (e.key === 'Enter') buscarPaciente();
+ });
+ const pesoInput = document.getElementById('Peso_Actual');
+ const tallaInput = document.getElementById('Estatura');
+ if(pesoInput && tallaInput) {
+ pesoInput.addEventListener('input', calcularIMC);
+ tallaInput.addEventListener('input', calcularIMC);
+ }
+ // Setup Canvas Firma
+ canvas = document.getElementById('signaturePad');
+ ctx = canvas.getContext('2d');
+ canvas.width = canvas.offsetWidth || 300; 
+ canvas.height = 180;
+ canvas.addEventListener('mousedown', () => drawing = true);
+ canvas.addEventListener('mouseup', () => { drawing = false; ctx.beginPath(); });
+ canvas.addEventListener('mousemove', dibujarMouse);
+ canvas.addEventListener('touchstart', (e) => { drawing = true; e.preventDefault(); });
+ canvas.addEventListener('touchend', () => { drawing = false; ctx.beginPath(); });
+ canvas.addEventListener('touchmove', dibujarTouch, { passive: false });
+ // FIX BUG "evolución repetida sin cambios": un solo listener delegado detecta cualquier // edición real del usuario en la ficha (tipear, tocar un checkbox, elegir una opción).
+ // Los precargados por JS (buscarPaciente, abrirFichaNuevoPaciente) asignan .value/.checked
+ // directamente y NO disparan 'input'/'change', así que no ensucian esta bandera.
+ const fichaHC = document.getElementById('screen-hc');
+ fichaHC.addEventListener('input', () => formularioModificado = true);
+ fichaHC.addEventListener('change', () => formularioModificado = true);
+ });
+ // MANEJO DE PANTALLAS V5
+ function cambiarPantalla(screenId) {
+ document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+ document.getElementById(screenId).classList.add('active');
+ if(screenId === 'screen-hc' && canvas) {
+ // Ajustar dimensiones del canvas cuando la pantalla se vuelve visible
+ setTimeout(() => {
+ canvas.width = canvas.offsetWidth;
+ canvas.height = 180;
+ }, 50);
+ }
+ }
+ function validarPIN() {
+ const pinVal = document.getElementById('pinInput').value.trim();
+ if(pinVal === PIN_ESTATICO) {
+ cambiarPantalla('screen-home');
+ } else {
+ alert("PIN de acceso incorrecto. Verifique y reintente.");
+ }
+ }
+ // Cierre de sesión manual: útil si el profesional debe dejar la PC sola o es compartida.
+ function cerrarSesion() {
+ if(confirm("¿Deseas cerrar sesión? Deberás ingresar el PIN nuevamente para continuar.")) {
+ document.getElementById('pinInput').value = '';
+ document.getElementById('dniSearch').value = '';
+ cambiarPantalla('screen-login');
+ }
+ }
+ function abrirFichaNuevoPaciente() {
+ ocultarConsentimientoYaFirmado();
+ evolucionYaGuardada = false;
+ formularioModificado = false;
+ document.getElementById('btnGuardar').textContent = "v Guardar";
+ // Limpiar campos para evitar remanentes
+ document.querySelectorAll('#screen-hc input:not([type=radio]), #screen-hc textarea').forEach(i => i.value = '');
+ document.querySelectorAll('#screen-hc input[type=radio]').forEach(r => r.checked = false);
+ document.getElementById('DNI_Paciente').readOnly = false;
+ document.getElementById('Nombre_Paciente').readOnly = false;
+ renderHistorial([]);
+ cambiarPantalla('screen-hc');
+ cambiarTab('t1');
+ }
+ function calcularIMC() {
+ const peso = parseFloat(document.getElementById('Peso_Actual').value);
+ const talla = parseFloat(document.getElementById('Estatura').value) / 100;
+ const imcInput = document.getElementById('IMC'); if (peso > 0 && talla > 0) {
+ imcInput.value = (peso / (talla * talla)).toFixed(2);
+ } else { imcInput.value = ''; }
+ }
+ function dibujarMouse(e) {
+ if(!drawing) return;
+ const r = canvas.getBoundingClientRect();
+ ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.strokeStyle = '#23281F';
+ ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
+ ctx.stroke();
+ }
+ function dibujarTouch(e) {
+ if(!drawing) return;
+ const r = canvas.getBoundingClientRect();
+ const touch = e.touches[0];
+ ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.strokeStyle = '#23281F';
+ ctx.lineTo(touch.clientX - r.left, touch.clientY - r.top);
+ ctx.stroke();
+ e.preventDefault();
+ }
+ function cambiarTab(id) {
+ document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+ document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
+ const panelActivo = document.getElementById(id);
+ const botonActivo = document.querySelector(`[data-tab="${id}"]`);
+ if(panelActivo) panelActivo.classList.add('active');
+ if(botonActivo) botonActivo.classList.add('active');
+ // FIX BUG CANVAS: el canvas de firma vive dentro de #t6. Si esa pestaña estaba oculta
+ // cuando se calculó su ancho (offsetWidth = 0), la firma queda "rota" para toda la sesión
+ // y bankruptCanvas() explota con IndexSizeError al guardar. Se re-mide cada vez que
+ // esta pestaña se vuelve visible, que es el único momento en que offsetWidth es correcto.
+ if(id === 't6' && canvas) {
+ setTimeout(() => {
+ const nuevoAncho = canvas.offsetWidth;
+ if(nuevoAncho > 0 && canvas.width !== nuevoAncho) {
+ canvas.width = nuevoAncho;
+ canvas.height = 180;
+ }
+ }, 30);
+ }
+ }
+ function generarQR() {
+ if(!puedeFirmar) {
+ return alert("Primero guarda la ficha clínica del paciente con el botón v Guardar. Recién ahí se habilita la firma, para asegurar que la carpeta del paciente yaexista.");
+ }
+ const dniPac = document.getElementById('DNI_Paciente').value.trim();
+ const nomPac = document.getElementById('Nombre_Paciente').value.trim();
+ if(!dniPac || !nomPac) return alert("Escribe el Nombre y DNI del paciente en la pestaña 01 para enlazar legalmente.");
+ const urlBase = window.location.href.split('?')[0];
+ const urlDinamica = `${urlBase}?modo=paciente&dni=${dniPac}&nombre=${encodeURIComponent(nomPac)}`;
+ document.getElementById('qrcode').innerHTML = '';
+ new QRCode(document.getElementById('qrcode'), { text: urlDinamica, width: 180, height: 180 }); document.getElementById('qrModal').classList.add('active');
+ }
+ function limpiarFirma() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+ 
+ function volverAlHomeOrReset() {
+ if(esModoPaciente) {
+ if(confirm("¿Deseas limpiar tu firma?")) limpiarFirma();
+ } else {
+ if(confirm("¿Volver al panel principal? Se perderán los cambios no guardados.")) {
+ cambiarPantalla('screen-home');
+ document.getElementById('dniSearch').value = '';
+ }
+ }
+ }
+ function mostrarConsentimientoYaFirmado(fechaTexto, pdfUrl = "") {
+ consentimientoPrevioExiste = true;
+ puedeFirmar = true;
+ document.getElementById('consentOkBanner').classList.add('active');
+ document.getElementById('zonaConsentimiento').style.display = 'none';
+ document.getElementById('fechaFirmaPrevia').textContent = fechaTexto || 'consulta previa';
+ 
+ // Si el backend nos proporciona el enlace del PDF, activar el Visor nativo de Drive
+ const visorContainer = document.getElementById('pdfViewerContainer');
+ const iframe = document.getElementById('pdfViewerFrame');
+ if(pdfUrl) {
+ iframe.src = pdfUrl.replace('/view', '/preview'); // Forzar modo incrustado
+ visorContainer.classList.add('active');
+ } else {
+ visorContainer.classList.remove('active');
+ iframe.src = "";
+ }
+ }
+ // Traduce errores técnicos de red/parseo a un mensaje entendible. Un "SyntaxError:
+ // Unexpected token '<'..." significa que la respuesta NO fue JSON (típicamente una
+ // página HTML de error, de autorización, o un portal cautivo del operador cuando la
+ // señal es muy débil), no un error del propio guardado.
+ function mensajeErrorFetch(err) {
+ const texto = err ? err.toString() : "Error desconocido";
+ if(texto.indexOf("SyntaxError") > -1 || texto.indexOf("Unexpected token") > -1) {
+ return "No se pudo interpretar la respuesta del servidor (posible corte de señal a mitad de la solicitud). Espera a tener buena conexión, vuelve a buscar alpaciente para confirmar el estado, y recién ahí reintenta.";
+ }
+ if(texto.indexOf("Failed to fetch") > -1 || texto.indexOf("NetworkError") > -1) {
+ return "No hay conexión a internet en este momento. Verifica tu señal e intenta de nuevo.";
+ }
+ return "Error de comunicación: " + texto;
+ }
+ // Puebla las columnas de solo lectura "Historial de Controles" (Antropometría) e
+ // "Historial de Exámenes" (Bioquímicos) con hasta 2 controles previos (el más reciente
+ // primero). Si hay menos de 2, las columnas faltantes quedan en "-- (Sin datos)".
+ const CAMPOS_HISTORIAL_ANTRO = ['Peso_Habitual','Peso_Actual','Estatura','IMC','Circ_Cintura','Circ_Pantorrilla','Circ_Braquial'];
+ const CAMPOS_HISTORIAL_BIOQ = ['Glicemia','Colesterol','Trigliceridos','HbA1c','Otro_Examen','Otro_Examen2','Otro_Examen3'];
+ function renderHistorial(historial) { const etiquetas = ['(Anterior)', '(Previo)'];
+ for(let col = 1; col <= 2; col++) {
+ const control = historial[col - 1];
+ const headerAntro = document.getElementById(`histHeaderAntro${col}`);
+ const headerBioq = document.getElementById(`histHeaderBioq${col}`);
+ if(control) {
+ const etiqueta = `${control.Fecha || '--'} <span style="font-weight:400; font-size:10px; text-transform:none;">${etiquetas[col-1]}</span>`;
+ headerAntro.innerHTML = etiqueta;
+ headerBioq.innerHTML = etiqueta;
+ } else {
+ const sinDatos = '-- <span style="font-weight:400; font-size:10px; text-transform:none;">(Sin datos)</span>';
+ headerAntro.innerHTML = sinDatos;
+ headerBioq.innerHTML = sinDatos;
+ }
+ CAMPOS_HISTORIAL_ANTRO.forEach(campo => {
+ document.getElementById(`hist${col}_${campo}`).textContent = (control && control[campo]) ? control[campo] : '--';
+ });
+ CAMPOS_HISTORIAL_BIOQ.forEach(campo => {
+ document.getElementById(`hist${col}_${campo}`).textContent = (control && control[campo]) ? control[campo] : '--';
+ });
+ }
+ }
+ function bankruptCanvas(c) {
+ // Guarda defensiva: si el canvas todavía no tiene dimensiones válidas
+ // (por ejemplo, la pestaña 06 nunca se llegó a mostrar), tratarlo como "vacío"
+ // en vez de dejar que getImageData tire IndexSizeError.
+ if(!c || c.width === 0 || c.height === 0) return true;
+ const buffer = new Uint32Array(ctx.getImageData(0,0,c.width,c.height).data.buffer);
+ return !buffer.some(color => color !== 0);
+ }
+ function ocultarConsentimientoYaFirmado() {
+ consentimientoPrevioExiste = false;
+ firmaPreviaBase64 = "";
+ puedeFirmar = false;
+ document.getElementById('consentOkBanner').classList.remove('active');
+ document.getElementById('zonaConsentimiento').style.display = 'block';
+ document.getElementById('pdfViewerContainer').classList.remove('active');
+ document.getElementById('pdfViewerFrame').src = "";
+ limpiarFirma();
+ }
+ // BÚSQUEDA ASÍNCRONA DESDE HOME
+ function buscarPaciente() {
+ const dni = document.getElementById('dniSearch').value.trim();
+ if(!dni) return alert("Por favor, ingresa un número de DNI.");
+ 
+ document.getElementById('btnBuscar').textContent = "Buscando...";
+ document.getElementById('btnBuscar').disabled = true;
+ 
+ fetch(`${SCRIPT_URL}?action=buscarPaciente&dni=${dni}`)
+ .then(res => res.json())
+ .then(res => {
+ if(res.success && res.data) {
+ evolucionYaGuardada = false;
+ formularioModificado = false;
+ document.getElementById('btnGuardar').textContent = "v Guardar"; // Pre-llenado clínico completo
+ document.getElementById('Nombre_Paciente').value = res.data.Nombre_Paciente || '';
+ document.getElementById('DNI_Paciente').value = dni;
+ document.getElementById('DNI_Paciente').readOnly = true; // Proteger ID clave
+ document.getElementById('Nombre_Paciente').readOnly = true; // Proteger nombre de filiación
+ document.getElementById('Fecha_Nacimiento').value = res.data.Fecha_Nacimiento || ''; 
+ document.getElementById('Edad_Paciente').value = res.data.Edad_Paciente || ''; 
+ document.getElementById('Ocupacion_Paciente').value = res.data.Ocupacion_Paciente || '';
+ document.getElementById('Convivencia').value = res.data.Convivencia || '';
+ document.getElementById('Motivo_Consulta').value = res.data.Motivo_Consulta || ''; 
+ document.getElementById('Actividad_Fisica').value = res.data.Actividad_Fisica || 'Sedentario';
+ if(res.data.Experiencia_Previa) {
+ document.querySelectorAll(`input[name="Experiencia_Previa"]`).forEach(r => {
+ if(r.value === res.data.Experiencia_Previa) r.checked = true;
+ });
+ }
+ document.getElementById('Medicamentos').value = res.data.Medicamentos || '';
+ document.getElementById('Antecedentes_Personales').value = res.data.Antecedentes_Personales || '';
+ document.getElementById('Antecedentes_Quirurgicos').value = res.data.Antecedentes_Quirurgicos || '';
+ document.getElementById('Antecedentes_Familiares').value = res.data.Antecedentes_Familiares || '';
+ // FIX: "Evolución Actual" (antropometría y bioquímicos) ya NO se precarga con la
+ // última visita -- queda siempre en blanco para los datos de HOY. Se limpia
+ // explícitamente por si quedó algo tipeado de una búsqueda anterior sin guardar.
+ ['Peso_Habitual','Peso_Actual','Estatura','IMC','Circ_Cintura','Circ_Pantorrilla','Circ_Braquial',
+ 'Glicemia','Colesterol','Trigliceridos','HbA1c','Otro_Examen','Otro_Examen2','Otro_Examen3']
+ .forEach(id => document.getElementById(id).value = '');
+ renderHistorial(res.data.Historial || []);
+ document.getElementById('Diagnostico_DNI').value = res.data.Diagnostico_DNI || '';
+ document.getElementById('Requerimiento').value = res.data.Requerimiento || '';
+ document.getElementById('Macros').value = res.data.Macros || '';
+ document.getElementById('Plan_Trabajo').value = res.data.Plan_Trabajo || '';
+ // Lógica de Consentimiento e inclusión del Visor PDF (res.data.Consentimiento_Pdf_Url)
+ if(res.data.Firma_Base64 || res.data.Consentimiento_Vigente === "VIGENTE") {
+ firmaPreviaBase64 = res.data.Firma_Base64 || "VIGENTE";
+ mostrarConsentimientoYaFirmado(res.data.Fecha_Consulta || 'atención previa', res.data.Consentimiento_Pdf_Url || "");
+ } else {
+ ocultarConsentimientoYaFirmado();
+ }
+ cambiarPantalla('screen-hc');
+ cambiarTab('t1');
+ } else {
+ // El paciente no existe, el flujo propone abrir ficha limpia automáticamente
+ if(confirm("El DNI ingresado no posee registros anteriores. ¿Deseas dar de alta un Paciente Nuevo con este documento?")) {
+ abrirFichaNuevoPaciente();
+ document.getElementById('DNI_Paciente').value = dni;
+ }
+ }
+ })
+ .catch(err => alert(mensajeErrorFetch(err)))
+ .finally(() => { 
+ document.getElementById('btnBuscar').textContent = "Buscar Historial"; 
+ document.getElementById('btnBuscar').disabled = false;
+ }); }
+ // ACCIÓN EXCLUSIVA: GUARDAR SOLO CONSENTIMIENTO (DESDE LA PESTAÑA LEGAL, O DESDE EL CELULAR DEL PACIENTE)
+ function guardarSoloConsentimiento() {
+ if(envioEnCurso) return; // Ya hay un guardado en curso: ignorar clics/taps repetidos.
+ // El paciente firmando desde su celular (vía QR) siempre está habilitado: el QR solo
+ // se genera después de que el profesional ya guardó la ficha. En cambio, si el
+ // profesional intenta firmar directamente desde este mismo dispositivo (botón
+ // "Registrar Solo Firma Actual"), sí se exige haber guardado antes, por la misma razón.
+ if(!esModoPaciente && !puedeFirmar) {
+ return alert("Primero guarda la ficha clínica del paciente con el botón v Guardar. Recién ahí se habilita la firma, para asegurar que la carpeta del paciente yaexista.");
+ }
+ const dniPac = document.getElementById('DNI_Paciente').value.trim();
+ const nomPac = document.getElementById('Nombre_Paciente').value.trim();
+ if(!dniPac || !nomPac) return alert("Faltan el nombre y DNI del paciente.");
+ if(!document.getElementById('checkConsent').checked || !document.getElementById('privacidadCheck').checked) {
+ return alert("El paciente debe aceptar los términos y políticas en pantalla.");
+ }
+ if(bankruptCanvas(canvas)) return alert("El recuadro de firma se encuentra vacío.");
+ // FIX BUG "guardados duplicados": bloquear ANTES de cualquier operación asíncrona
+ // (incluyendo antes del fetch), no después. Así, si el usuario vuelve a tocar el botón
+ // mientras la firma se está subiendo, ese segundo toque no hace nada porque el botón
+ // ya está deshabilitado y envioEnCurso ya es true.
+ envioEnCurso = true;
+ const btn = document.getElementById('btnSoloConsentimiento');
+ if(btn) { btn.disabled = true; btn.textContent = "Procesando firma..."; }
+ const payload = {
+ action: "guardarConsentimientoAislado",
+ dniPaciente: dniPac,
+ nombrePaciente: nomPac,
+ firmaBase64: canvas.toDataURL(),
+ timestamp: new Date().toISOString(),
+ pin: PIN_ESTATICO
+ };
+ fetch(SCRIPT_URL, {
+ method: 'POST',
+ body: JSON.stringify(payload)
+ })
+ .then(res => res.json())
+ .then(res => {
+ if(res.success) {
+ alert("v Consentimiento Guardado. Se ha archivado el PDF legal único en Google Drive.");
+ mostrarConsentimientoYaFirmado(new Date().toLocaleDateString(), res.pdfUrl || "");
+ } else { alert("Error: " + res.message); }
+ })
+ .catch(err => alert(mensajeErrorFetch(err) + "\n\nSi el guardado sí llegó a procesarse en el servidor antes del corte, no se duplicará: revisa el historial antes dreintentar."))
+ .finally(() => {
+ envioEnCurso = false;
+ if(btn) { btn.disabled = false; btn.textContent = "v Registrar Solo Firma Actual"; }
+ }); }
+ // ACCIÓN PRINCIPAL: ENVIAR FORMULARIO (BOTÓN GUARDAR EVOLUCIÓN CLINICA)
+ // FIX BUG 3: si el botón se pulsa en modo paciente (celular, vía QR), esto NO debe
+ // crear una evolución clínica vacía. El paciente solo firma el consentimiento;
+ // el registro clínico completo lo guarda el profesional desde su propio dispositivo.
+ //
+ // NUEVO FLUJO: guardar la ficha ya NO exige que el paciente haya firmado antes.
+ // Se guarda siempre; si hace falta firma, recién después se ofrece el QR o firmar
+ // en este mismo dispositivo (ver mostrarPopupFirmaPendiente). Esto evita por completo
+ // la carrera entre "guardar" y "firmar" compitiendo por crear la misma carpeta/fila.
+ async function enviarFormulario() {
+ if(esModoPaciente) {
+ return guardarSoloConsentimiento();
+ }
+ // FIX BUG "evolución duplicada tras firmar": si esta ficha ya se guardó en la sesión
+ // actual (ej. el profesional guardó, firmó por QR o en el dispositivo, y volvió a esta
+ // pantalla), este mismo botón ya no reenvía el formulario: solo vuelve al inicio.
+ if(evolucionYaGuardada) {
+ cambiarPantalla('screen-home');
+ document.getElementById('dniSearch').value = '';
+ return;
+ }
+ if(envioEnCurso) return; // Ya hay un guardado en curso: ignorar clics repetidos.
+ const dniPac = document.getElementById('DNI_Paciente').value.trim();
+ const nomPac = document.getElementById('Nombre_Paciente').value.trim();
+ if(!dniPac || !nomPac) return alert("Faltan datos de filiación del paciente (Nombre y DNI).");
+ // FIX BUG 28: si no se detectó ninguna edición real desde que se cargó esta ficha,
+ // guardar generaría una evolución idéntica a la última visita, sin sentido clínico.
+ // Se pide confirmación explícita en vez de bloquear directamente, por si alguna vez
+ // el profesional de verdad quiere registrar un control igual al anterior (ej. un
+ // control de rutina sin cambios).
+ if(!formularioModificado) {
+ const confirmarSinCambios = confirm(
+ "No se detectó ningún cambio en la ficha respecto a la última visita cargada.\n\n" +
+ "Si solo entraste a consultar datos, usa '<- Salir / Buscar otro paciente' (arriba) en vez de Guardar.\n\n" +
+ "¿Guardar de todas formas un control idéntico al anterior?"
+ );
+ if(!confirmarSinCambios) return;
+ }
+ envioEnCurso = true;
+ const btnGuardar = document.getElementById('btnGuardar');
+ btnGuardar.disabled = true;
+ btnGuardar.textContent = "Guardando...";
+ function liberarBoton() {
+ envioEnCurso = false;
+ btnGuardar.disabled = false;
+ // Si el guardado tuvo éxito, el texto ya quedó como "v Ir al Inicio" (ver .then());
+ // si falló, vuelve a "v Guardar" para permitir reintentar.
+ btnGuardar.textContent = evolucionYaGuardada ? "v Ir al Inicio" : "v Guardar";
+ } const expPreviaNode = document.querySelector('input[name="Experiencia_Previa"]:checked');
+ const formData = {
+ action: "guardarEvolucionClinica",
+ dniPaciente: dniPac,
+ nombrePaciente: nomPac,
+ fechaNacimiento: document.getElementById('Fecha_Nacimiento').value,
+ edadPaciente: document.getElementById('Edad_Paciente').value,
+ ocupacionPaciente: document.getElementById('Ocupacion_Paciente').value,
+ convivencia: document.getElementById('Convivencia').value,
+ motivoConsulta: document.getElementById('Motivo_Consulta').value,
+ actividadFisica: document.getElementById('Actividad_Fisica').value,
+ experienciaPrevia: expPreviaNode ? expPreviaNode.value : '',
+ medicamentos: document.getElementById('Medicamentos').value,
+ antecedentesPersonales: document.getElementById('Antecedentes_Personales').value,
+ antecedentesQuirurgicos: document.getElementById('Antecedentes_Quirurgicos').value,
+ antecedentesFamiliares: document.getElementById('Antecedentes_Familiares').value,
+ pesoHabitual: document.getElementById('Peso_Habitual').value,
+ pesoActual: document.getElementById('Peso_Actual').value,
+ estatura: document.getElementById('Estatura').value,
+ imc: document.getElementById('IMC').value,
+ circCintura: document.getElementById('Circ_Cintura').value,
+ circPantorrilla: document.getElementById('Circ_Pantorrilla').value,
+ circBraquial: document.getElementById('Circ_Braquial').value,
+ glicemia: document.getElementById('Glicemia').value,
+ colesterol: document.getElementById('Colesterol').value,
+ trigliceridos: document.getElementById('Trigliceridos').value,
+ hbA1c: document.getElementById('HbA1c').value,
+ otroExamen: document.getElementById('Otro_Examen').value,
+ otroExamen2: document.getElementById('Otro_Examen2').value,
+ otroExamen3: document.getElementById('Otro_Examen3').value,
+ diagnosticoDNI: document.getElementById('Diagnostico_DNI').value,
+ requerimiento: document.getElementById('Requerimiento').value,
+ macros: document.getElementById('Macros').value,
+ planTrabajo: document.getElementById('Plan_Trabajo').value,
+ timestamp: new Date().toISOString(),
+ pin: PIN_ESTATICO
+ };
+ fetch(SCRIPT_URL, {
+ method: 'POST',
+ body: JSON.stringify(formData)
+ })
+ .then(res => res.json())
+ .then(res => {
+ if(res.success) {
+ evolucionYaGuardada = true; // A partir de ahora este botón solo vuelve al inicio.
+ puedeFirmar = true; // Ya se guardó: la carpeta y la fila del paciente ya existen.
+ btnGuardar.textContent = "v Ir al Inicio";
+ if(res.necesitaFirma) {
+ mostrarPopupFirmaPendiente();
+ } else {
+ alert("v Registro Clínico Guardado Correctamente. Se ha generado la evolución en Sheets y el informe PDF en Google Drive.");
+ cambiarPantalla('screen-home');
+ document.getElementById('dniSearch').value = '';
+ }
+ } else {
+ alert("Error devuelto por el servidor: " + res.message);
+ } })
+ .catch(err => alert(mensajeErrorFetch(err) + "\n\nSi el guardado sí llegó a procesarse en el servidor antes del corte, no se duplicará: revisa el historial antes dreintentar."))
+ .finally(liberarBoton);
+ }
+ // Popup posterior al guardado: solo aparece si el paciente todavía no tiene consentimiento
+ // vigente. Ofrece firmar por QR (celular del paciente) o directamente en este dispositivo.
+ function mostrarPopupFirmaPendiente() {
+ document.getElementById('firmaPendienteModal').classList.add('active');
+ }
+ function firmarAhoraEnEsteDispositivo() {
+ document.getElementById('firmaPendienteModal').classList.remove('active');
+ cambiarTab('t6');
+ }
+ function firmarMasTarde() {
+ document.getElementById('firmaPendienteModal').classList.remove('active');
+ alert("v Registro Clínico Guardado Correctamente. Recuerda que este paciente aún no tiene el consentimiento firmado.");
+ cambiarPantalla('screen-home');
+ document.getElementById('dniSearch').value = '';
+ }
 </script>
 </body>
 </html>
